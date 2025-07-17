@@ -12,6 +12,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} ${req.method} ${req.path} - ${req.ip}`);
+  next();
+});
+
 // Load swagger spec
 const specPath = path.join(__dirname, 'api_spec.json');
 console.log('Loading swagger spec from:', specPath);
@@ -22,93 +28,9 @@ console.log('Files in directory:', fs.readdirSync(__dirname).filter(f => f.endsW
 const swaggerSpec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
 console.log('Swagger spec loaded successfully');
 
-// Custom Swagger UI options
+// Simplified Swagger UI options for debugging
 const swaggerOptions = {
-  explorer: true,
-  swaggerOptions: {
-    persistAuthorization: true,
-    displayRequestDuration: true,
-    filter: true,
-    showExtensions: true,
-    showCommonExtensions: true
-  },
-  customCss: `
-    .swagger-ui .topbar { display: none; }
-    .oauth-input-container {
-      background: #fafafa;
-      border: 1px solid #d4d4d4;
-      border-radius: 4px;
-      padding: 20px;
-      margin: 20px 0;
-    }
-    .oauth-input-container h3 {
-      margin-top: 0;
-      color: #3b4151;
-    }
-    .oauth-input-container input {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #d4d4d4;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-    .oauth-input-container button {
-      background: #4990e2;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-    .oauth-input-container button:hover {
-      background: #357abd;
-    }
-  `,
-  customJs: `
-    window.onload = function() {
-      // Add OAuth configuration form
-      const topbar = document.querySelector('.swagger-ui .information-container');
-      if (topbar) {
-        const oauthForm = document.createElement('div');
-        oauthForm.className = 'oauth-input-container';
-        oauthForm.innerHTML = \`
-          <h3>🔐 OAuth Configuration</h3>
-          <p><strong>Step 1:</strong> Get your OAuth credentials from <a href="https://www.onlinescoutmanager.co.uk" target="_blank">OSM</a></p>
-          <input type="text" id="clientId" placeholder="Enter your OAuth Client ID" />
-          <input type="password" id="clientSecret" placeholder="Enter your OAuth Client Secret" />
-          <button onclick="configureOAuth()">Configure OAuth & Authorize</button>
-          <p><small>Your credentials are only used in your browser and not stored on our servers.</small></p>
-        \`;
-        topbar.appendChild(oauthForm);
-      }
-      
-      // OAuth configuration function
-      window.configureOAuth = function() {
-        const clientId = document.getElementById('clientId').value;
-        const clientSecret = document.getElementById('clientSecret').value;
-        
-        if (!clientId || !clientSecret) {
-          alert('Please enter both Client ID and Client Secret');
-          return;
-        }
-        
-        // Configure OAuth in Swagger UI
-        const ui = window.ui;
-        if (ui) {
-          ui.preauthorizeApiKey('oAuth2ClientCredentials', {
-            clientId: clientId,
-            clientSecret: clientSecret
-          });
-          
-          // Show success message
-          alert('OAuth configured successfully! You can now use the "Authorize" button to get your access token.');
-        }
-      };
-    };
-  `
+  explorer: true
 };
 
 // Serve Swagger UI
@@ -122,7 +44,14 @@ app.get('/', (req, res) => {
 
 // Health check endpoint
 app.get('/health', (req, res) => {
+  console.log('Health check accessed');
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
+// Simple test endpoint
+app.get('/test', (req, res) => {
+  console.log('Test endpoint accessed');
+  res.send('<h1>Test page works!</h1><p>Server is running correctly.</p><p><a href="/api-docs">Go to API docs</a></p>');
 });
 
 // Debug route to see what's happening
