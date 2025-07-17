@@ -13,8 +13,13 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // Load swagger spec
-console.log('Loading swagger spec from:', path.join(__dirname, 'api_spec.json'));
-const swaggerSpec = JSON.parse(fs.readFileSync(path.join(__dirname, 'api_spec.json'), 'utf8'));
+const specPath = path.join(__dirname, 'api_spec.json');
+console.log('Loading swagger spec from:', specPath);
+console.log('File exists:', fs.existsSync(specPath));
+console.log('Current working directory:', process.cwd());
+console.log('Files in directory:', fs.readdirSync(__dirname).filter(f => f.endsWith('.json')));
+
+const swaggerSpec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
 console.log('Swagger spec loaded successfully');
 
 // Custom Swagger UI options
