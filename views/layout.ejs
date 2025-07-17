@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-gray-900">
+                        <a href="/" class="hover:text-blue-600">OSM API</a>
+                    </h1>
+                </div>
+                <nav class="flex space-x-4">
+                    <a href="/api-docs" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                        API Documentation
+                    </a>
+                    <a href="/swagger.json" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                        Raw Spec
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <%- body %>
+    </main>
+    
+    <footer class="bg-white border-t mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center text-gray-500 text-sm">
+                <p>&copy; 2025 OSM API Documentation. Powered by OpenAPI & Swagger UI.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

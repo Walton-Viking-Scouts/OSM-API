@@ -1,29 +1,31 @@
 {
-  "name": "osm-api-docs",
+  "name": "osm-api-swagger",
   "version": "1.0.0",
-  "description": "Online Scout Manager API Documentation with OAuth Testing",
-  "main": "server.js",
+  "description": "OpenAPI/Swagger documentation for OSM API",
+  "main": "app.js",
   "scripts": {
-    "start": "node server.js",
-    "build": "npm install && touch ecosystem.config.js",
-    "dev": "node server.js"
-  },
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "js-yaml": "^4.1.0",
-    "swagger-ui-express": "^5.0.0"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9",
+    "express-ejs-layouts": "^2.5.1",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   },
   "keywords": [
-    "osm",
-    "api",
     "swagger",
-    "oauth",
-    "scout-manager"
+    "openapi",
+    "api",
+    "documentation",
+    "osm"
   ],
-  "author": "Simon",
+  "author": "Your Name",
   "license": "MIT"
 }

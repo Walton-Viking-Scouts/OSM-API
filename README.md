@@ -1,150 +1,157 @@
-# Online Scout Manager API Documentation
+# OSM API Documentation
 
-This repository contains the OpenAPI 3.0 specification for the Online Scout Manager (OSM) API.
+A clean, modern OpenAPI/Swagger documentation server built with Express.js, EJS, and Tailwind CSS.
 
-## Files
+## Features
 
-- `osm-api-swagger.yaml` - The main OpenAPI specification file
-- Contains sanitized example data for public consumption
+- 🚀 **Modern UI**: Clean interface built with Tailwind CSS
+- 📚 **Interactive Docs**: Full Swagger UI integration
+- 📄 **Raw Spec Access**: Direct access to OpenAPI specification
+- 🎨 **Responsive Design**: Works on all devices
+- ⚡ **Fast Deployment**: Ready for Render.com deployment
+- 🔧 **Health Checks**: Built-in health endpoint for monitoring
 
-## API Overview
+## Quick Start
 
-The OSM API provides endpoints for:
-- User authentication
-- Member management
-- Programme activities
-- Event management
-- Badge tracking
-- Scout group administration
+### Local Development
 
-## Base URL
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd osm-api-swagger
+   ```
 
-```
-https://www.onlinescoutmanager.co.uk/ext
-```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-## Authentication
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-This API uses **OAuth 2.0** for authorization. OAuth is a standard mechanism that allows users to enter their password in one system without having to give it to third party software.
+4. **Open in browser**
+   - Home: http://localhost:3000
+   - API Docs: http://localhost:3000/api-docs
+   - Raw Spec: http://localhost:3000/swagger.json
 
-### Getting Started
+### Production Build
 
-1. **Download an OAuth client library** for your programming language
-2. Follow the library's documentation using the URLs and flows below
-
-### OAuth Flows
-
-- **Authorization Code Flow**: Use if your application will be used by other people
-- **Client Credentials Flow**: Use if you are the only user (uses the user account that created the application)
-
-### OAuth URLs
-
-| Purpose | URL | Description |
-|---------|-----|-------------|
-| **Authorization** | `https://www.onlinescoutmanager.co.uk/oauth/authorize` | For authorization code flow - users click this link to log in and authorize your app |
-| **Access Token** | `https://www.onlinescoutmanager.co.uk/oauth/token` | Exchange authorization code for access token and refresh token |
-| **Resource Owner** | `https://www.onlinescoutmanager.co.uk/oauth/resource` | Get user's full name, email, and accessible sections |
-
-### Implementation Steps
-
-1. **Authorization Code Flow**:
-   - Direct users to the authorization URL
-   - After login, OSM redirects to your specified Redirect URL
-   - Exchange the authorization code for tokens using the token URL
-   - Store access token and refresh token in your database
-
-2. **Client Credentials Flow**:
-   - Direct token request to the token URL with client credentials
-   - Store the returned access token
-
-3. **Access User Information**:
-   - Use the resource owner URL to get user details and permissions
-
-## Using the API
-
-The OSM API is unsupported and undocumented, but your application can perform any action that you can do on the website since your browser uses the same API.
-
-### Discovery Method
-
-1. **Use your browser's developer console** to watch network requests when performing actions you want to automate
-2. **Pay attention to request methods** - note whether requests are GET or POST
-3. **Use your OAuth client library** to create authenticated requests to the discovered URLs
-4. **Authentication header** - Your OAuth library will set a 'Bearer token' in the authorization header
-
-### Rate Limits
-
-Monitor these standard rate limit headers to prevent your application from being blocked:
-
-| Header | Description |
-|--------|-------------|
-| `X-RateLimit-Limit` | Number of requests per hour per authenticated user |
-| `X-RateLimit-Remaining` | Remaining requests before being blocked |
-| `X-RateLimit-Reset` | Seconds until rate limit resets |
-
-- **HTTP 429 status** will be sent if you exceed the limit
-- **Retry-After header** indicates seconds until you can use the API again
-- **Implement your own rate limits**, especially for unauthenticated user actions
-
-### Best Practices
-
-#### Response Handling
-- **Always check responses** and abort if they're not as expected
-- **Invalid requests** will result in your application being blocked
-
-#### Monitor Headers
-- **`X-Deprecated`** - Features with this header will be removed after the specified date
-- **`X-Blocked`** - Your application has been blocked due to invalid data or unauthorized access
-- **Continuing after being blocked** will result in a permanent block
-
-#### Data Validation
-- **Sanitize and validate** all input data before sending to OSM
-- **Invalid data** will result in your application being blocked
-- **Verify users are not bots** if allowing unauthenticated access
-
-## Usage
-
-You can use this specification with:
-- Swagger UI
-- Postman
-- OpenAPI generators
-- Any OpenAPI-compatible tool
-
-## Live Demo
-
-🚀 **Try it live at: [Your Render.com URL]**
-
-### How to Use the Live Demo
-
-1. **Visit the deployment URL** (will be available after deployment)
-2. **Get OAuth credentials** from [OSM](https://www.onlinescoutmanager.co.uk)
-3. **Enter your credentials** in the OAuth Configuration form
-4. **Click "Configure OAuth & Authorize"**
-5. **Use the "Authorize" button** in Swagger UI to get your access token
-6. **Test the API endpoints** with real OAuth authentication
-
-## Local Development
-
-### Prerequisites
-- Node.js 16+ 
-- npm
-
-### Setup
 ```bash
-git clone <your-repo-url>
-cd OSM-API
-npm install
 npm start
 ```
 
-Visit `http://localhost:3000/api-docs`
+## Project Structure
 
-### Deployment to Render.com
+```
+├── app.js                 # Main Express application
+├── package.json          # Dependencies and scripts
+├── swagger.json          # OpenAPI specification
+├── views/                # EJS templates
+│   ├── layout.ejs        # Main layout template
+│   ├── index.ejs         # Home page
+│   └── 404.ejs           # 404 error page
+├── public/               # Static assets
+│   ├── css/
+│   │   └── style.css     # Custom CSS
+│   └── js/               # JavaScript files
+└── README.md            # This file
+```
 
-1. **Connect your GitHub repo** to Render.com
-2. **Create a new Web Service**
-3. **Use the included `render.yaml`** for automatic configuration
-4. **Deploy** - Render will automatically build and deploy
+## API Endpoints
 
-## Note
+| Endpoint | Description |
+|----------|-------------|
+| `/` | Home page with API information |
+| `/api-docs` | Interactive Swagger UI documentation |
+| `/swagger.json` | Raw OpenAPI specification |
+| `/health` | Health check endpoint |
 
-This specification was generated from API traffic analysis and contains representative example data. All sensitive information has been sanitized for public use.
+## Deployment
+
+### Render.com Deployment
+
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Initial commit"
+   git push origin main
+   ```
+
+2. **Create new Web Service on Render**
+   - Go to [Render Dashboard](https://dashboard.render.com)
+   - Click "New" → "Web Service"
+   - Connect your GitHub repository
+
+3. **Configure the service**
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+   - **Environment**: `Node`
+   - **Node Version**: `18` or higher
+
+4. **Deploy**
+   - Click "Create Web Service"
+   - Render will automatically deploy your app
+
+### Environment Variables
+
+No environment variables are required for basic operation. The app will run on:
+- `PORT`: Automatically set by Render (default: 3000)
+
+## Customization
+
+### Updating the OpenAPI Spec
+
+Replace the `swagger.json` file with your OpenAPI specification and restart the server.
+
+### Styling
+
+- **Tailwind CSS**: Utility-first CSS framework (loaded via CDN)
+- **Custom CSS**: Add styles to `public/css/style.css`
+- **Swagger UI**: Customize in `app.js` under `swaggerUi.setup()` options
+
+### Templates
+
+Edit EJS templates in the `views/` directory:
+- `layout.ejs`: Main layout with navigation
+- `index.ejs`: Home page content
+- `404.ejs`: Error page
+
+## Development
+
+### Scripts
+
+- `npm start`: Start production server
+- `npm run dev`: Start development server with nodemon
+
+### Adding Features
+
+1. **New routes**: Add to `app.js`
+2. **New pages**: Create EJS templates in `views/`
+3. **Static assets**: Add to `public/`
+
+## Health Check
+
+The `/health` endpoint returns:
+```json
+{
+  "status": "OK",
+  "timestamp": "2025-01-01T00:00:00.000Z"
+}
+```
+
+## License
+
+MIT License - see LICENSE file for details
+
+## Support
+
+For issues and questions:
+1. Check the [GitHub Issues](link-to-issues)
+2. Review the [Render.com docs](https://render.com/docs)
+3. OpenAPI/Swagger documentation: [OpenAPI Specification](https://swagger.io/specification/)
+
+---
+
+Built with ❤️ using Express.js, EJS, and Tailwind CSS
