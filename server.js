@@ -143,7 +143,7 @@ app.use('*', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`OSM API Documentation server running on port ${PORT}`);
   console.log(`Visit: http://localhost:${PORT}/api-docs`);
 });
