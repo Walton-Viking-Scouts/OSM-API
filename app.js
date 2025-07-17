@@ -14,6 +14,7 @@ const swaggerSpec = JSON.parse(fs.readFileSync('./api_spec.json', 'utf8'));
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(expressLayouts);
+app.set('layout', 'layout');
 
 // Serve static files (CSS, JS, images)
 app.use(express.static('public'));
