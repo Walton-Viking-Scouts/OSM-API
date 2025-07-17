@@ -26,11 +26,6 @@ console.log('File exists:', fs.existsSync(specPath));
 const swaggerSpec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
 console.log('Swagger spec loaded successfully');
 
-// Simplified Swagger UI options for debugging
-const swaggerOptions = {
-  explorer: true
-};
-
 // Redirect api-docs to root (static file)
 app.get('/api-docs', (req, res) => {
   console.log('API docs accessed, redirecting to root');
@@ -98,15 +93,9 @@ app.get('/debug', (req, res) => {
   });
 });
 
-// Fallback for any api-docs related requests
-app.use('/api-docs*', (req, res) => {
-  console.log(`Fallback api-docs route hit: ${req.method} ${req.path} ${req.url}`);
-  res.status(404).send(`<h1>API Docs Route Not Found</h1><p>Path: ${req.path}</p><p>URL: ${req.url}</p><p><a href="/test">Test page</a></p>`);
-});
-
 // Catch-all for debugging
 app.use('*', (req, res) => {
-  console.log(`Catch-all route hit: ${req.method} ${req.path} ${req.url}`);
+  console.log(`Route not found: ${req.method} ${req.path}`);
   res.status(404).json({ 
     error: 'Route not found', 
     path: req.originalUrl,
