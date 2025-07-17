@@ -1,81 +1,111 @@
-<% layout('layout') -%>
-
-<div class="text-center">
-    <div class="mx-auto max-w-2xl">
-        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            <%= apiTitle %>
-        </h1>
-        <p class="mt-6 text-lg leading-8 text-gray-600">
-            <%= apiDescription %>
-        </p>
-        <div class="mt-10 flex items-center justify-center gap-x-6">
-            <a href="/api-docs" class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                📚 Explore API Documentation
-            </a>
-            <a href="/swagger.json" class="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600">
-                📄 View Raw Spec <span aria-hidden="true">→</span>
-            </a>
-        </div>
-    </div>
-</div>
-
-<div class="mt-16">
-    <div class="mx-auto max-w-4xl">
-        <div class="bg-white rounded-lg shadow px-6 py-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">API Information</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Version</h3>
-                    <p class="text-gray-600"><%= apiVersion %></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= apiTitle %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <div class="bg-white shadow">
+            <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <h1 class="text-xl font-semibold text-gray-900">OSM API Documentation</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="/api-docs" class="text-gray-500 hover:text-gray-700">API Docs</a>
+                        <a href="/swagger.json" class="text-gray-500 hover:text-gray-700">Raw Spec</a>
+                    </div>
                 </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Format</h3>
-                    <p class="text-gray-600">OpenAPI 3.0</p>
+            </nav>
+        </div>
+
+        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <div class="px-4 py-6 sm:px-0">
+                <div class="text-center">
+                    <div class="mx-auto max-w-2xl">
+                        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                            <%= apiTitle %>
+                        </h1>
+                        <p class="mt-6 text-lg leading-8 text-gray-600">
+                            <%= apiDescription %>
+                        </p>
+                        <div class="mt-10 flex items-center justify-center gap-x-6">
+                            <a href="/api-docs" class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                                📚 Explore API Documentation
+                            </a>
+                            <a href="/swagger.json" class="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-600">
+                                📄 View Raw Spec <span aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-16">
+                    <div class="mx-auto max-w-4xl">
+                        <div class="bg-white rounded-lg shadow px-6 py-8">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-4">API Information</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Version</h3>
+                                    <p class="text-gray-600"><%= apiVersion %></p>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Format</h3>
+                                    <p class="text-gray-600">OpenAPI 3.0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <div class="mx-auto max-w-4xl">
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
+                            <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Start</h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <div class="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full">
+                                            <span class="text-white font-semibold text-sm">1</span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-lg font-medium text-gray-900">Browse the API</h3>
+                                        <p class="text-gray-600">Use the interactive Swagger UI to explore all available endpoints.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <div class="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full">
+                                            <span class="text-white font-semibold text-sm">2</span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-lg font-medium text-gray-900">Download the Spec</h3>
+                                        <p class="text-gray-600">Get the raw OpenAPI specification for code generation or import into other tools.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <div class="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full">
+                                            <span class="text-white font-semibold text-sm">3</span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-lg font-medium text-gray-900">Start Building</h3>
+                                        <p class="text-gray-600">Use the API documentation to integrate with your applications.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
-</div>
-
-<div class="mt-8">
-    <div class="mx-auto max-w-4xl">
-        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Start</h2>
-            <div class="space-y-4">
-                <div class="flex items-start">
-                    <div class="flex-shrink-0">
-                        <div class="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full">
-                            <span class="text-white font-semibold text-sm">1</span>
-                        </div>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="text-lg font-medium text-gray-900">Browse the API</h3>
-                        <p class="text-gray-600">Use the interactive Swagger UI to explore all available endpoints.</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <div class="flex-shrink-0">
-                        <div class="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full">
-                            <span class="text-white font-semibold text-sm">2</span>
-                        </div>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="text-lg font-medium text-gray-900">Download the Spec</h3>
-                        <p class="text-gray-600">Get the raw OpenAPI specification for code generation or import into other tools.</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <div class="flex-shrink-0">
-                        <div class="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full">
-                            <span class="text-white font-semibold text-sm">3</span>
-                        </div>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="text-lg font-medium text-gray-900">Start Building</h3>
-                        <p class="text-gray-600">Use the API documentation to integrate with your applications.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+</body>
+</html>

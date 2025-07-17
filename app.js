@@ -1,6 +1,5 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-const expressLayouts = require('express-ejs-layouts');
 const fs = require('fs');
 const path = require('path');
 
@@ -13,8 +12,6 @@ const swaggerSpec = JSON.parse(fs.readFileSync('./api_spec.json', 'utf8'));
 // Set EJS as view engine
 app.set('view engine', 'ejs');
 app.set('views', './views');
-app.set('layout', 'layout');
-app.use(expressLayouts);
 
 // Serve static files (CSS, JS, images)
 app.use(express.static('public'));
