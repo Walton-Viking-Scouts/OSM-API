@@ -18,12 +18,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Load swagger spec
-const specPath = path.join(__dirname, 'api_spec.json');
+// Load swagger spec from public directory
+const specPath = path.join(__dirname, 'public/swagger/spec.json');
 console.log('Loading swagger spec from:', specPath);
 console.log('File exists:', fs.existsSync(specPath));
-console.log('Current working directory:', process.cwd());
-console.log('Files in directory:', fs.readdirSync(__dirname).filter(f => f.endsWith('.json')));
 
 const swaggerSpec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
 console.log('Swagger spec loaded successfully');
@@ -33,22 +31,44 @@ const swaggerOptions = {
   explorer: true
 };
 
-// Debug middleware for swagger UI
-app.use('/api-docs*', (req, res, next) => {
-  console.log(`API-DOCS request: ${req.method} ${req.path} ${req.url}`);
-  next();
-});
-
-// Serve Swagger UI with error handling
-app.use('/api-docs', swaggerUi.serve);
-app.get('/api-docs', (req, res, next) => {
-  console.log('Setting up Swagger UI...');
-  try {
-    swaggerUi.setup(swaggerSpec, swaggerOptions)(req, res, next);
-  } catch (error) {
-    console.error('Swagger UI setup error:', error);
-    res.status(500).send(`<h1>Swagger UI Error</h1><pre>${error.message}</pre>`);
-  }
+// Serve Swagger UI as simple HTML page
+app.get('/api-docs', (req, res) => {
+  console.log('Serving Swagger UI HTML page');
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>OSM API Documentation</title>
+      <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.0.0/swagger-ui.css" />
+      <style>
+        html { box-sizing: border-box; overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
+        *, *:before, *:after { box-sizing: inherit; }
+        body { margin:0; background: #fafafa; }
+      </style>
+    </head>
+    <body>
+      <div id="swagger-ui"></div>
+      <script src="https://unpkg.com/swagger-ui-dist@5.0.0/swagger-ui-bundle.js"></script>
+      <script>
+        window.onload = function() {
+          SwaggerUIBundle({
+            url: '/swagger/spec.json',
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+              SwaggerUIBundle.presets.apis,
+              SwaggerUIBundle.presets.standalone
+            ],
+            plugins: [
+              SwaggerUIBundle.plugins.DownloadUrl
+            ],
+            layout: "StandaloneLayout"
+          });
+        }
+      </script>
+    </body>
+    </html>
+  `);
 });
 
 // Root redirect
