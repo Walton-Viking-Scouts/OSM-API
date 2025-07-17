@@ -26,7 +26,13 @@ console.log('File exists:', fs.existsSync(specPath));
 const swaggerSpec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
 console.log('Swagger spec loaded successfully');
 
-// Redirect api-docs to root (static file)
+// Explicitly serve index.html for root route
+app.get('/', (req, res) => {
+  console.log('Root route accessed, serving index.html');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Redirect api-docs to root
 app.get('/api-docs', (req, res) => {
   console.log('API docs accessed, redirecting to root');
   res.redirect('/');
