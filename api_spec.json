@@ -1,1 +1,63 @@
-{"openapi":"3.0.0","info":{"title":"/Users/simon/Downloads/flows-2 Mitmproxy2Swagger","version":"1.0.0"},"servers":[{"url":"https://www.onlinescoutmanager.co.uk/ext","description":"The default server"}],"paths":{},"x-path-templates":["ignore:/badges/badgesbyperson/","ignore:/badges/due/","ignore:/badges/records/","ignore:/badges/stock/","ignore:/customdata/","ignore:/dashboard/","ignore:/events/event/sharing/","ignore:/events/summary/","ignore:/generic/featureusage/","ignore:/generic/startup/","ignore:/members/contact/","ignore:/members/contact/grid/","ignore:/members/flexirecords/","ignore:/members/patrols/","ignore:/programme/","ignore:/programme/activities/","ignore:/settings/patrols/","ignore:/users/auth/","ignore:/users/notifications/"]}
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Online Scout Manager API",
+    "version": "1.0.0",
+    "description": "OpenAPI specification for the Online Scout Manager API"
+  },
+  "servers": [
+    {
+      "url": "https://www.onlinescoutmanager.co.uk/ext",
+      "description": "The default server"
+    }
+  ],
+  "paths": {
+    "/users/auth/": {
+      "post": {
+        "summary": "User authentication",
+        "description": "Authenticate a user with OSM",
+        "responses": {
+          "200": {
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "now_ts": {
+                      "type": "number"
+                    },
+                    "security_question": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-path-templates": [
+    "ignore:/badges/badgesbyperson/",
+    "ignore:/badges/due/",
+    "ignore:/badges/records/",
+    "ignore:/badges/stock/",
+    "ignore:/customdata/",
+    "ignore:/dashboard/",
+    "ignore:/events/event/sharing/",
+    "ignore:/events/summary/",
+    "ignore:/generic/featureusage/",
+    "ignore:/generic/startup/",
+    "ignore:/members/contact/",
+    "ignore:/members/contact/grid/",
+    "ignore:/members/flexirecords/",
+    "ignore:/members/patrols/",
+    "ignore:/programme/",
+    "ignore:/programme/activities/",
+    "ignore:/settings/patrols/",
+    "ignore:/users/auth/",
+    "ignore:/users/notifications/"
+  ]
+}

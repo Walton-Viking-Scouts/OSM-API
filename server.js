@@ -116,6 +116,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerOption
 
 // Root redirect
 app.get('/', (req, res) => {
+  console.log('Root route accessed, redirecting to /api-docs');
   res.redirect('/api-docs');
 });
 
