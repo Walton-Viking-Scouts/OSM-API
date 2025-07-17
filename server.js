@@ -33,8 +33,23 @@ const swaggerOptions = {
   explorer: true
 };
 
-// Serve Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerOptions));
+// Debug middleware for swagger UI
+app.use('/api-docs*', (req, res, next) => {
+  console.log(`API-DOCS request: ${req.method} ${req.path} ${req.url}`);
+  next();
+});
+
+// Serve Swagger UI with error handling
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', (req, res, next) => {
+  console.log('Setting up Swagger UI...');
+  try {
+    swaggerUi.setup(swaggerSpec, swaggerOptions)(req, res, next);
+  } catch (error) {
+    console.error('Swagger UI setup error:', error);
+    res.status(500).send(`<h1>Swagger UI Error</h1><pre>${error.message}</pre>`);
+  }
+});
 
 // Root redirect
 app.get('/', (req, res) => {
@@ -64,8 +79,15 @@ app.get('/debug', (req, res) => {
   });
 });
 
+// Fallback for any api-docs related requests
+app.use('/api-docs*', (req, res) => {
+  console.log(`Fallback api-docs route hit: ${req.method} ${req.path} ${req.url}`);
+  res.status(404).send(`<h1>API Docs Route Not Found</h1><p>Path: ${req.path}</p><p>URL: ${req.url}</p><p><a href="/test">Test page</a></p>`);
+});
+
 // Catch-all for debugging
 app.use('*', (req, res) => {
+  console.log(`Catch-all route hit: ${req.method} ${req.path} ${req.url}`);
   res.status(404).json({ 
     error: 'Route not found', 
     path: req.originalUrl,
