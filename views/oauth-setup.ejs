@@ -41,10 +41,9 @@
                         <h3 class="text-lg font-semibold text-blue-900 mb-2">Setup Instructions</h3>
                         <ol class="list-decimal list-inside text-sm text-blue-800 space-y-1">
                             <li>Go to <a href="https://www.onlinescoutmanager.co.uk/oauth/applications" target="_blank" class="underline hover:text-blue-600">OSM OAuth Applications</a></li>
-                            <li>Create a new application or use an existing one</li>
+                            <li>Create a new application with <strong>Client Credentials</strong> grant type</li>
                             <li>Copy your Client ID and Client Secret</li>
-                            <li>Set your redirect URI to: <code class="bg-blue-100 px-1 rounded"><%- protocol %>://<%- host %>/oauth/callback</code></li>
-                            <li>Enter your credentials below</li>
+                            <li>Enter your credentials below and click "Get Token"</li>
                         </ol>
                     </div>
                 </div>
@@ -131,14 +130,14 @@
                             Save Configuration
                         </button>
                         <% if (typeof hasToken !== 'undefined' && hasToken) { %>
-                            <a href="/oauth/authorize" 
+                            <a href="/oauth/token" 
                                class="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-center">
                                 Get New Token
                             </a>
                         <% } else { %>
-                            <a href="/oauth/authorize" 
+                            <a href="/oauth/token" 
                                class="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-center">
-                                Authorize & Get Token
+                                Get Token
                             </a>
                         <% } %>
                     </div>

@@ -108,63 +108,21 @@ app.post('/oauth/configure', (req, res) => {
   res.redirect('/oauth/setup?success=Configuration saved successfully');
 });
 
-// OAuth authorization redirect
-app.get('/oauth/authorize', (req, res) => {
+// OAuth direct token exchange using client credentials flow
+app.get('/oauth/token', async (req, res) => {
   if (!req.session.oauthConfig) {
     return res.redirect('/oauth/setup?error=Please configure OAuth settings first');
   }
 
-  const { clientId, scopes } = req.session.oauthConfig;
-  const protocol = req.get('X-Forwarded-Proto') || req.protocol;
-  const host = req.get('host');
-  const redirectUri = `${protocol}://${host}/oauth/callback`;
-  
-  // Generate state parameter for security
-  const state = uuidv4();
-  req.session.oauthState = state;
-
-  const authUrl = new URL('https://www.onlinescoutmanager.co.uk/oauth/authorize');
-  authUrl.searchParams.set('client_id', clientId);
-  authUrl.searchParams.set('redirect_uri', redirectUri);
-  authUrl.searchParams.set('response_type', 'code');
-  authUrl.searchParams.set('scope', scopes.join(' '));
-  authUrl.searchParams.set('state', state);
-
-  res.redirect(authUrl.toString());
-});
-
-// OAuth callback handler
-app.get('/oauth/callback', async (req, res) => {
-  const { code, state, error } = req.query;
-
-  if (error) {
-    return res.redirect(`/oauth/setup?error=OAuth error: ${error}`);
-  }
-
-  if (!code || !state) {
-    return res.redirect('/oauth/setup?error=Invalid callback parameters');
-  }
-
-  if (state !== req.session.oauthState) {
-    return res.redirect('/oauth/setup?error=Invalid state parameter');
-  }
-
-  if (!req.session.oauthConfig) {
-    return res.redirect('/oauth/setup?error=OAuth configuration not found');
-  }
+  const { clientId, clientSecret, scopes } = req.session.oauthConfig;
 
   try {
-    const protocol = req.get('X-Forwarded-Proto') || req.protocol;
-    const host = req.get('host');
-    const redirectUri = `${protocol}://${host}/oauth/callback`;
-
-    // Exchange code for access token
+    // Direct token exchange using client credentials flow
     const tokenResponse = await axios.post('https://www.onlinescoutmanager.co.uk/oauth/token', {
-      grant_type: 'authorization_code',
-      client_id: req.session.oauthConfig.clientId,
-      client_secret: req.session.oauthConfig.clientSecret,
-      code: code,
-      redirect_uri: redirectUri
+      grant_type: 'client_credentials',
+      client_id: clientId,
+      client_secret: clientSecret,
+      scope: scopes.join(' ')
     }, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -187,6 +145,7 @@ app.get('/oauth/callback', async (req, res) => {
     res.redirect(`/oauth/setup?error=Token exchange failed: ${error.response?.data?.error || error.message}`);
   }
 });
+
 
 // OAuth token refresh endpoint
 app.post('/oauth/refresh', async (req, res) => {
