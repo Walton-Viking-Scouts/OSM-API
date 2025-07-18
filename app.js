@@ -207,6 +207,36 @@ app.get('/oauth/token-info', (req, res) => {
   });
 });
 
+// OAuth proxy endpoint for Swagger UI (avoids CORS issues)
+app.post('/oauth/proxy', async (req, res) => {
+  const { client_id, client_secret, grant_type, scope } = req.body;
+  
+  if (!client_id || !client_secret || grant_type !== 'client_credentials') {
+    return res.status(400).json({ error: 'invalid_request', error_description: 'Missing or invalid parameters' });
+  }
+
+  try {
+    const tokenResponse = await axios.post('https://www.onlinescoutmanager.co.uk/oauth/token', 
+      new URLSearchParams({
+        grant_type: 'client_credentials',
+        scope: scope || ''
+      }), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`
+      }
+    });
+
+    // Return the token response directly to Swagger UI
+    res.json(tokenResponse.data);
+  } catch (error) {
+    console.error('OAuth proxy error:', error.response?.data || error.message);
+    res.status(error.response?.status || 500).json(
+      error.response?.data || { error: 'server_error', error_description: 'Token exchange failed' }
+    );
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).render('404', { title: '404 - Not Found' });
