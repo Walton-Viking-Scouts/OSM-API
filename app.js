@@ -266,9 +266,16 @@ app.post('/oauth/proxy', async (req, res) => {
     // Return the token response directly to Swagger UI
     res.json(tokenResponse.data);
   } catch (error) {
-    console.error('OAuth proxy error:', error.response?.data || error.message);
+    console.error('OAuth proxy error details:', {
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      message: error.message,
+      code: error.code
+    });
+    
     res.status(error.response?.status || 500).json(
-      error.response?.data || { error: 'server_error', error_description: 'Token exchange failed' }
+      error.response?.data || { error: 'server_error', error_description: `Token exchange failed: ${error.message}` }
     );
   }
 });
