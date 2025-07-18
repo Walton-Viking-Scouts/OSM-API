@@ -217,15 +217,28 @@ app.get('/oauth/token-info', (req, res) => {
 
 // OAuth proxy endpoint for Swagger UI (avoids CORS issues)
 app.post('/oauth/proxy', async (req, res) => {
-  const { client_id, client_secret, grant_type, scope } = req.body;
+  console.log('OAuth proxy request received:', {
+    contentType: req.get('content-type'),
+    body: req.body,
+    rawBody: req.rawBody
+  });
+
+  // Handle both JSON and form-encoded requests from Swagger UI
+  let client_id, client_secret, grant_type, scope;
   
-  console.log('OAuth proxy request:', {
+  if (req.get('content-type')?.includes('application/x-www-form-urlencoded')) {
+    // Form-encoded request
+    ({ client_id, client_secret, grant_type, scope } = req.body);
+  } else {
+    // JSON request
+    ({ client_id, client_secret, grant_type, scope } = req.body);
+  }
+  
+  console.log('Parsed OAuth params:', {
     hasClientId: !!client_id,
     hasClientSecret: !!client_secret,
     grant_type,
-    scope,
-    body: req.body,
-    headers: req.headers
+    scope: scope || 'none'
   });
   
   if (!client_id || !client_secret || grant_type !== 'client_credentials') {
@@ -242,6 +255,12 @@ app.post('/oauth/proxy', async (req, res) => {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': `Basic ${Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`
       }
+    });
+
+    console.log('OSM OAuth success:', { 
+      hasAccessToken: !!tokenResponse.data.access_token,
+      tokenType: tokenResponse.data.token_type,
+      expiresIn: tokenResponse.data.expires_in
     });
 
     // Return the token response directly to Swagger UI

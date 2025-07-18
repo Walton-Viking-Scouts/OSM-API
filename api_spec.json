@@ -5983,7 +5983,7 @@
         "type": "oauth2",
         "flows": {
           "clientCredentials": {
-            "tokenUrl": "https://www.onlinescoutmanager.co.uk/oauth/token",
+            "tokenUrl": "/oauth/proxy",
             "scopes": {
               "section:administration:read": "Read access to administration areas",
               "section:administration:write": "Write access to administration areas",
