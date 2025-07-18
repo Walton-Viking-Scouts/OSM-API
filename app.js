@@ -5,7 +5,6 @@ const path = require('path');
 const session = require('express-session');
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
-const expressLayouts = require('express-ejs-layouts');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,10 +15,6 @@ const swaggerSpec = JSON.parse(fs.readFileSync(path.join(__dirname, 'api_spec.js
 // Set EJS as view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-// Use EJS layouts
-app.use(expressLayouts);
-app.set('layout', 'layout');
 
 // Session configuration
 app.use(session({
