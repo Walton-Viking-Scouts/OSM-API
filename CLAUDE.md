@@ -10,8 +10,7 @@ This is a Node.js Express.js application that serves OpenAPI/Swagger documentati
 
 ### Core Components
 - **Express.js Server** (`app.js`) - Main application entry point with middleware setup
-- **EJS Templates** (`views/`) - Server-side rendered pages with layouts
-- **Layout System** - **CRITICAL**: Uses `express-ejs-layouts` middleware and `layout.ejs` template
+- **EJS Templates** (`views/`) - Server-side rendered standalone HTML pages
 - **OAuth Integration** - Session-based OAuth 2.0 flow for OSM API authentication
 - **Swagger UI Integration** - Interactive API documentation at `/api-docs`
 - **Static Asset Serving** - CSS, JS, and other assets from `public/`
@@ -19,17 +18,16 @@ This is a Node.js Express.js application that serves OpenAPI/Swagger documentati
 
 ### Key Design Patterns
 - **MVC-like Structure**: Routes in `app.js`, views in `views/`, static assets in `public/`
-- **Layout System**: Uses `express-ejs-layouts` with a main layout template
+- **Standalone Templates**: Each EJS template is a complete HTML document with its own navigation
 - **Session Management**: Express sessions for OAuth token storage
 - **Responsive Design**: Tailwind CSS via CDN for styling
 - **Health Check Pattern**: `/health` endpoint for monitoring and deployment health checks
 
 ### ⚠️ Critical Architectural Dependencies
 **NEVER REMOVE OR MODIFY WITHOUT CAREFUL CONSIDERATION:**
-- `express-ejs-layouts` middleware in `app.js` - Required for template rendering
-- `layout.ejs` template - Main layout wrapper for all pages
 - Session middleware configuration - Required for OAuth functionality
 - Static file serving - Required for CSS, JS, and Swagger UI customizations
+- Standalone template structure - Each template contains complete HTML with navigation
 
 ## Development Commands
 
@@ -53,17 +51,17 @@ npm run dev       # Start development server with nodemon
 - `api_spec.json` - OpenAPI 3.0 specification (15 endpoints for OSM API)
 
 ### View Layer
-- `views/layout.ejs` - **CRITICAL**: Main layout template with Tailwind CSS and navigation
-- `views/index.ejs` - Homepage content (uses layout system - NOT standalone HTML)
-- `views/oauth-setup.ejs` - OAuth configuration page (uses layout system)
-- `views/404.ejs` - Custom 404 error page (uses layout system)
+- `views/index.ejs` - Homepage with complete HTML structure and navigation
+- `views/oauth-setup.ejs` - OAuth configuration page with complete HTML structure
+- `views/404.ejs` - Custom 404 error page with complete HTML structure
+- `views/layout.ejs` - Legacy layout file (no longer used but kept for reference)
 
-### ⚠️ Template System Integrity
-**IMPORTANT**: All EJS templates use the layout system via `express-ejs-layouts`:
-- Templates in `views/` are content-only (no `<html>`, `<head>`, `<body>` tags)
-- The `layout.ejs` provides the HTML structure and navigation
-- If you modify templates, maintain this separation - content templates should contain only the page-specific content
-- Never convert templates to standalone HTML without removing the layout middleware
+### ⚠️ Template System Architecture
+**IMPORTANT**: All EJS templates are standalone HTML documents:
+- Each template in `views/` contains complete HTML (`<html>`, `<head>`, `<body>` tags)
+- Templates include their own navigation and styling
+- No layout system is used - each template is self-contained
+- When modifying templates, maintain consistent navigation and styling across all pages
 
 ### Static Assets
 - `public/css/style.css` - Custom CSS including Swagger UI customizations
