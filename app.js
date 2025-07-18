@@ -211,6 +211,15 @@ app.get('/oauth/token-info', (req, res) => {
 app.post('/oauth/proxy', async (req, res) => {
   const { client_id, client_secret, grant_type, scope } = req.body;
   
+  console.log('OAuth proxy request:', {
+    hasClientId: !!client_id,
+    hasClientSecret: !!client_secret,
+    grant_type,
+    scope,
+    body: req.body,
+    headers: req.headers
+  });
+  
   if (!client_id || !client_secret || grant_type !== 'client_credentials') {
     return res.status(400).json({ error: 'invalid_request', error_description: 'Missing or invalid parameters' });
   }
