@@ -117,15 +117,15 @@ app.get('/oauth/token', async (req, res) => {
   const { clientId, clientSecret, scopes } = req.session.oauthConfig;
 
   try {
-    // Direct token exchange using client credentials flow
-    const tokenResponse = await axios.post('https://www.onlinescoutmanager.co.uk/oauth/token', {
-      grant_type: 'client_credentials',
-      client_id: clientId,
-      client_secret: clientSecret,
-      scope: scopes.join(' ')
-    }, {
+    // Direct token exchange using client credentials flow with HTTP Basic Auth
+    const tokenResponse = await axios.post('https://www.onlinescoutmanager.co.uk/oauth/token', 
+      new URLSearchParams({
+        grant_type: 'client_credentials',
+        scope: scopes.join(' ')
+      }), {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`
       }
     });
 
