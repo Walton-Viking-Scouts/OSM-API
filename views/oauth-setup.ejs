@@ -1,126 +1,171 @@
-<div class="max-w-2xl mx-auto">
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-3xl font-bold text-gray-900 mb-6">OAuth Configuration</h1>
-        
-        <div class="mb-6">
-            <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
-                <h3 class="text-lg font-semibold text-blue-900 mb-2">Setup Instructions</h3>
-                <ol class="list-decimal list-inside text-sm text-blue-800 space-y-1">
-                    <li>Go to <a href="https://www.onlinescoutmanager.co.uk/oauth/applications" target="_blank" class="underline hover:text-blue-600">OSM OAuth Applications</a></li>
-                    <li>Create a new application or use an existing one</li>
-                    <li>Copy your Client ID and Client Secret</li>
-                    <li>Set your redirect URI to: <code class="bg-blue-100 px-1 rounded"><%- protocol %>://<%- host %>/oauth/callback</code></li>
-                    <li>Enter your credentials below</li>
-                </ol>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-gray-900">
+                        <a href="/" class="hover:text-blue-600">OSM API</a>
+                    </h1>
+                </div>
+                <nav class="flex space-x-4">
+                    <a href="/oauth/setup" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                        OAuth Setup
+                    </a>
+                    <a href="/api-docs" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                        API Documentation
+                    </a>
+                    <a href="/swagger.json" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                        Raw Spec
+                    </a>
+                </nav>
             </div>
         </div>
-
-        <% if (typeof error !== 'undefined' && error) { %>
-            <div class="bg-red-50 border border-red-200 rounded-md p-4 mb-4">
-                <p class="text-red-800"><%= error %></p>
-            </div>
-        <% } %>
-
-        <% if (typeof success !== 'undefined' && success) { %>
-            <div class="bg-green-50 border border-green-200 rounded-md p-4 mb-4">
-                <p class="text-green-800"><%= success %></p>
-            </div>
-        <% } %>
-
-        <form action="/oauth/configure" method="POST" class="space-y-4">
-            <div>
-                <label for="client_id" class="block text-sm font-medium text-gray-700 mb-1">Client ID</label>
-                <input type="text" 
-                       id="client_id" 
-                       name="client_id" 
-                       value="<%= typeof clientId !== 'undefined' ? clientId : '' %>"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                       placeholder="Enter your OSM OAuth Client ID"
-                       required>
-            </div>
-
-            <div>
-                <label for="client_secret" class="block text-sm font-medium text-gray-700 mb-1">Client Secret</label>
-                <input type="password" 
-                       id="client_secret" 
-                       name="client_secret"
-                       value="<%= typeof clientSecret !== 'undefined' ? clientSecret : '' %>"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                       placeholder="Enter your OSM OAuth Client Secret"
-                       required>
-            </div>
-
-            <div>
-                <label for="scopes" class="block text-sm font-medium text-gray-700 mb-1">Scopes</label>
-                <div class="space-y-2">
-                    <div class="grid grid-cols-2 gap-2">
-                        <label class="flex items-center">
-                            <input type="checkbox" name="scopes" value="section:member:read" class="mr-2">
-                            <span class="text-sm">Member (Read)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="scopes" value="section:member:write" class="mr-2">
-                            <span class="text-sm">Member (Write)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="scopes" value="section:badge:read" class="mr-2">
-                            <span class="text-sm">Badge (Read)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="scopes" value="section:badge:write" class="mr-2">
-                            <span class="text-sm">Badge (Write)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="scopes" value="section:event:read" class="mr-2">
-                            <span class="text-sm">Event (Read)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="scopes" value="section:event:write" class="mr-2">
-                            <span class="text-sm">Event (Write)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="scopes" value="section:attendance:read" class="mr-2">
-                            <span class="text-sm">Attendance (Read)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" name="scopes" value="section:attendance:write" class="mr-2">
-                            <span class="text-sm">Attendance (Write)</span>
-                        </label>
+    </header>
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6">OAuth Configuration</h1>
+                
+                <div class="mb-6">
+                    <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                        <h3 class="text-lg font-semibold text-blue-900 mb-2">Setup Instructions</h3>
+                        <ol class="list-decimal list-inside text-sm text-blue-800 space-y-1">
+                            <li>Go to <a href="https://www.onlinescoutmanager.co.uk/oauth/applications" target="_blank" class="underline hover:text-blue-600">OSM OAuth Applications</a></li>
+                            <li>Create a new application or use an existing one</li>
+                            <li>Copy your Client ID and Client Secret</li>
+                            <li>Set your redirect URI to: <code class="bg-blue-100 px-1 rounded"><%- protocol %>://<%- host %>/oauth/callback</code></li>
+                            <li>Enter your credentials below</li>
+                        </ol>
                     </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-1">Select the permissions your application needs</p>
-            </div>
 
-            <div class="flex space-x-3">
-                <button type="submit" 
-                        class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    Save Configuration
-                </button>
-                <% if (typeof hasToken !== 'undefined' && hasToken) { %>
-                    <a href="/oauth/authorize" 
-                       class="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-center">
-                        Get New Token
-                    </a>
-                <% } else { %>
-                    <a href="/oauth/authorize" 
-                       class="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-center">
-                        Authorize & Get Token
-                    </a>
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="bg-red-50 border border-red-200 rounded-md p-4 mb-4">
+                        <p class="text-red-800"><%= error %></p>
+                    </div>
+                <% } %>
+
+                <% if (typeof success !== 'undefined' && success) { %>
+                    <div class="bg-green-50 border border-green-200 rounded-md p-4 mb-4">
+                        <p class="text-green-800"><%= success %></p>
+                    </div>
+                <% } %>
+
+                <form action="/oauth/configure" method="POST" class="space-y-4">
+                    <div>
+                        <label for="client_id" class="block text-sm font-medium text-gray-700 mb-1">Client ID</label>
+                        <input type="text" 
+                               id="client_id" 
+                               name="client_id" 
+                               value="<%= typeof clientId !== 'undefined' ? clientId : '' %>"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Enter your OSM OAuth Client ID"
+                               required>
+                    </div>
+
+                    <div>
+                        <label for="client_secret" class="block text-sm font-medium text-gray-700 mb-1">Client Secret</label>
+                        <input type="password" 
+                               id="client_secret" 
+                               name="client_secret"
+                               value="<%= typeof clientSecret !== 'undefined' ? clientSecret : '' %>"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Enter your OSM OAuth Client Secret"
+                               required>
+                    </div>
+
+                    <div>
+                        <label for="scopes" class="block text-sm font-medium text-gray-700 mb-1">Scopes</label>
+                        <div class="space-y-2">
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="scopes" value="section:member:read" class="mr-2">
+                                    <span class="text-sm">Member (Read)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="scopes" value="section:member:write" class="mr-2">
+                                    <span class="text-sm">Member (Write)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="scopes" value="section:badge:read" class="mr-2">
+                                    <span class="text-sm">Badge (Read)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="scopes" value="section:badge:write" class="mr-2">
+                                    <span class="text-sm">Badge (Write)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="scopes" value="section:event:read" class="mr-2">
+                                    <span class="text-sm">Event (Read)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="scopes" value="section:event:write" class="mr-2">
+                                    <span class="text-sm">Event (Write)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="scopes" value="section:attendance:read" class="mr-2">
+                                    <span class="text-sm">Attendance (Read)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="scopes" value="section:attendance:write" class="mr-2">
+                                    <span class="text-sm">Attendance (Write)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Select the permissions your application needs</p>
+                    </div>
+
+                    <div class="flex space-x-3">
+                        <button type="submit" 
+                                class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            Save Configuration
+                        </button>
+                        <% if (typeof hasToken !== 'undefined' && hasToken) { %>
+                            <a href="/oauth/authorize" 
+                               class="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-center">
+                                Get New Token
+                            </a>
+                        <% } else { %>
+                            <a href="/oauth/authorize" 
+                               class="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-center">
+                                Authorize & Get Token
+                            </a>
+                        <% } %>
+                    </div>
+                </form>
+
+                <% if (typeof tokenInfo !== 'undefined' && tokenInfo) { %>
+                    <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-md">
+                        <h3 class="text-lg font-semibold text-green-900 mb-2">Token Status</h3>
+                        <p class="text-sm text-green-800">✅ Access token obtained successfully!</p>
+                        <p class="text-xs text-green-600 mt-1">Token expires: <%= tokenInfo.expiresAt || 'Unknown' %></p>
+                        <div class="mt-2">
+                            <a href="/api-docs" class="text-sm text-green-700 hover:text-green-600 underline">
+                                → Try API calls in Swagger UI
+                            </a>
+                        </div>
+                    </div>
                 <% } %>
             </div>
-        </form>
-
-        <% if (typeof tokenInfo !== 'undefined' && tokenInfo) { %>
-            <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-md">
-                <h3 class="text-lg font-semibold text-green-900 mb-2">Token Status</h3>
-                <p class="text-sm text-green-800">✅ Access token obtained successfully!</p>
-                <p class="text-xs text-green-600 mt-1">Token expires: <%= tokenInfo.expiresAt || 'Unknown' %></p>
-                <div class="mt-2">
-                    <a href="/api-docs" class="text-sm text-green-700 hover:text-green-600 underline">
-                        → Try API calls in Swagger UI
-                    </a>
-                </div>
+        </div>
+    </main>
+    
+    <footer class="bg-white border-t mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center text-gray-500 text-sm">
+                <p>&copy; 2025 OSM API Documentation. Powered by OpenAPI & Swagger UI.</p>
             </div>
-        <% } %>
-    </div>
-</div>
+        </div>
+    </footer>
+</body>
+</html>
