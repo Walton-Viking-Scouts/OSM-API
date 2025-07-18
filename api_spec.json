@@ -5982,32 +5982,6 @@
       "oauth2": {
         "type": "oauth2",
         "flows": {
-          "authorizationCode": {
-            "authorizationUrl": "https://www.onlinescoutmanager.co.uk/oauth/authorize",
-            "tokenUrl": "https://www.onlinescoutmanager.co.uk/oauth/token",
-            "scopes": {
-              "section:administration:read": "Read access to administration areas",
-              "section:administration:write": "Write access to administration areas",
-              "section:administration:admin": "Admin access to administration areas",
-              "section:attendance:read": "Read access to attendance register",
-              "section:attendance:write": "Write access to attendance register",
-              "section:badge:read": "Read access to badge records",
-              "section:badge:write": "Write access to badge records",
-              "section:event:read": "Read access to events",
-              "section:event:write": "Write access to events",
-              "section:finance:read": "Read access to financial areas",
-              "section:finance:write": "Write access to financial areas",
-              "section:finance:admin": "Admin access to financial areas",
-              "section:flexirecord:read": "Read access to flexi-records",
-              "section:flexirecord:write": "Write access to flexi-records",
-              "section:member:read": "Read access to member data",
-              "section:member:write": "Write access to member data",
-              "section:programme:read": "Read access to programme",
-              "section:programme:write": "Write access to programme",
-              "section:quartermaster:read": "Read access to quartermaster area",
-              "section:quartermaster:write": "Write access to quartermaster area"
-            }
-          },
           "clientCredentials": {
             "tokenUrl": "https://www.onlinescoutmanager.co.uk/oauth/token",
             "scopes": {
