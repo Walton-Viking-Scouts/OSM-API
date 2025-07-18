@@ -244,7 +244,10 @@ app.use((req, res) => {
 
 // Start server
 app.listen(PORT, () => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const baseUrl = isProduction ? 'https://osm-api-docs.onrender.com' : `http://localhost:${PORT}`;
+  
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📚 API docs: http://localhost:${PORT}/api-docs`);
-  console.log(`📄 Raw spec: http://localhost:${PORT}/swagger.json`);
+  console.log(`📚 API docs: ${baseUrl}/api-docs`);
+  console.log(`📄 Raw spec: ${baseUrl}/swagger.json`);
 });
