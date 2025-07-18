@@ -11,11 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Load OpenAPI spec
-const swaggerSpec = JSON.parse(fs.readFileSync('./api_spec.json', 'utf8'));
+const swaggerSpec = JSON.parse(fs.readFileSync(path.join(__dirname, 'api_spec.json'), 'utf8'));
 
 // Set EJS as view engine
 app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set('views', path.join(__dirname, 'views'));
 
 // Use EJS layouts
 app.use(expressLayouts);
