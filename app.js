@@ -26,7 +26,14 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'osm-api-secret-key-change-in-production',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 } // 24 hours
+  cookie: { 
+    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  },
+  // Use default MemoryStore only in development
+  // In production, this warning can be safely ignored for single-instance deployments
+  // For multi-instance deployments, consider using connect-redis or similar
+  name: 'osm-api-session'
 }));
 
 // Parse URL-encoded bodies and JSON
