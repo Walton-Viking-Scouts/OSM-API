@@ -20,11 +20,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(session({
   secret: process.env.SESSION_SECRET || 'osm-api-secret-key-change-in-production',
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true, // Force session creation
   cookie: { 
-    secure: process.env.NODE_ENV === 'production' && process.env.FORCE_HTTPS !== 'false',
+    secure: false, // Disable secure cookies temporarily for debugging
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    sameSite: 'lax' // Help with cross-site requests
+    sameSite: 'lax', // Help with cross-site requests
+    httpOnly: true
   },
   // Use default MemoryStore only in development
   // In production, this warning can be safely ignored for single-instance deployments
@@ -94,6 +95,8 @@ app.get('/oauth/setup', (req, res) => {
 app.post('/oauth/configure', (req, res) => {
   const { client_id, client_secret, scopes } = req.body;
   
+  console.log('OAuth configure received:', { client_id: client_id ? '***' : 'undefined', client_secret: client_secret ? '***' : 'undefined', scopes });
+  
   if (!client_id || !client_secret) {
     return res.redirect('/oauth/setup?error=Client ID and Secret are required');
   }
@@ -104,6 +107,12 @@ app.post('/oauth/configure', (req, res) => {
     clientSecret: client_secret,
     scopes: Array.isArray(scopes) ? scopes : (scopes ? [scopes] : [])
   };
+
+  console.log('Session after save:', { 
+    sessionId: req.sessionID, 
+    hasOauthConfig: !!req.session.oauthConfig,
+    configKeys: req.session.oauthConfig ? Object.keys(req.session.oauthConfig) : []
+  });
 
   res.redirect('/oauth/setup?success=Configuration saved successfully');
 });
