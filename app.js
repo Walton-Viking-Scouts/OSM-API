@@ -231,12 +231,20 @@ app.get('/oauth/token-info', (req, res) => {
   });
 });
 
+// Handle preflight OPTIONS requests for CORS
+app.options('/oauth/proxy', (req, res) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.sendStatus(200);
+});
+
 // OAuth proxy endpoint for Swagger UI (avoids CORS issues)
 app.post('/oauth/proxy', async (req, res) => {
   console.log('OAuth proxy request received:', {
     contentType: req.get('content-type'),
     body: req.body,
-    rawBody: req.rawBody
+    headers: Object.keys(req.headers)
   });
 
   // Handle both JSON and form-encoded requests from Swagger UI
@@ -245,9 +253,12 @@ app.post('/oauth/proxy', async (req, res) => {
   if (req.get('content-type')?.includes('application/x-www-form-urlencoded')) {
     // Form-encoded request
     ({ client_id, client_secret, grant_type, scope } = req.body);
-  } else {
+  } else if (req.get('content-type')?.includes('application/json')) {
     // JSON request
     ({ client_id, client_secret, grant_type, scope } = req.body);
+  } else {
+    // Try to parse anyway
+    ({ client_id, client_secret, grant_type, scope } = req.body || {});
   }
   
   console.log('Parsed OAuth params:', {

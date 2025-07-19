@@ -2,25 +2,35 @@
 
 // Wait for Swagger UI to be loaded
 window.addEventListener('load', function() {
-  // Check if we have an access token
-  fetch('/oauth/token-info')
-    .then(response => response.json())
-    .then(data => {
-      if (data.authenticated) {
-        // Add OAuth status indicator to the page
-        addOAuthStatusIndicator(data);
-        
-        // Set up request interceptor to add OAuth token
-        setupRequestInterceptor();
-      } else {
-        // Show OAuth setup message
+  // Add a small delay to ensure Swagger UI is fully initialized
+  setTimeout(() => {
+    // Check if we have an access token
+    fetch('/oauth/token-info')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.authenticated) {
+          // Add OAuth status indicator to the page
+          addOAuthStatusIndicator(data);
+          
+          // Set up request interceptor to add OAuth token
+          setupRequestInterceptor();
+        } else {
+          // Show OAuth setup message
+          addOAuthSetupMessage();
+        }
+      })
+      .catch(error => {
+        console.error('Error checking OAuth status:', error);
         addOAuthSetupMessage();
-      }
-    })
-    .catch(error => {
-      console.error('Error checking OAuth status:', error);
-      addOAuthSetupMessage();
-    });
+        // Add error indicator
+        addErrorMessage(`OAuth status check failed: ${error.message}`);
+      });
+  }, 500);
 });
 
 function addOAuthStatusIndicator(tokenInfo) {
@@ -159,23 +169,55 @@ function openSwaggerOAuth() {
     if (window.ui && window.ui.authActions) {
       clearInterval(waitForSwagger);
       
-      // Trigger Swagger UI's built-in OAuth dialog
-      const authWrapper = document.querySelector('.auth-wrapper');
-      if (authWrapper) {
-        // Find and click the authorize button
-        const authorizeBtn = document.querySelector('.btn.authorize');
-        if (authorizeBtn) {
-          authorizeBtn.click();
+      try {
+        // Trigger Swagger UI's built-in OAuth dialog
+        const authWrapper = document.querySelector('.auth-wrapper');
+        if (authWrapper) {
+          // Find and click the authorize button
+          const authorizeBtn = document.querySelector('.btn.authorize');
+          if (authorizeBtn) {
+            authorizeBtn.click();
+          } else {
+            // Fallback: manually trigger auth action
+            window.ui.authActions.showDefinitions(['oauth2']);
+          }
         } else {
-          // Fallback: manually trigger auth action
+          // Manual auth action trigger
           window.ui.authActions.showDefinitions(['oauth2']);
         }
-      } else {
-        // Manual auth action trigger
-        window.ui.authActions.showDefinitions(['oauth2']);
+      } catch (error) {
+        console.error('Error opening Swagger OAuth:', error);
+        addErrorMessage(`Failed to open OAuth dialog: ${error.message}`);
       }
     }
   }, 100);
+  
+  // Timeout after 5 seconds
+  setTimeout(() => {
+    clearInterval(waitForSwagger);
+  }, 5000);
+}
+
+function addErrorMessage(message) {
+  const container = document.querySelector('.swagger-ui .info');
+  if (container) {
+    // Remove any existing error messages
+    const existingError = container.querySelector('.oauth-error-message');
+    if (existingError) {
+      existingError.remove();
+    }
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'oauth-error-message';
+    errorDiv.innerHTML = `
+      <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 10px; margin: 10px 0; border-radius: 4px;">
+        <strong>❌ OAuth Error</strong><br>
+        <small>${message}</small>
+        <button onclick="this.parentElement.parentElement.remove()" style="float: right; background: none; border: none; color: #721c24; cursor: pointer;">×</button>
+      </div>
+    `;
+    container.appendChild(errorDiv);
+  }
 }
 
 // Add some custom CSS for better OAuth status display
