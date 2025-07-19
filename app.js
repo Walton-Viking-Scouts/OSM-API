@@ -58,8 +58,24 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customCss: '.swagger-ui .topbar { display: none }',
   customSiteTitle: 'OSM API Documentation',
   swaggerOptions: {
+    oauth2RedirectUrl: process.env.NODE_ENV === 'production' ? 
+      'https://osm-api-docs.onrender.com/api-docs/oauth2-redirect.html' : 
+      `http://localhost:${PORT}/api-docs/oauth2-redirect.html`,
+    initOAuth: {
+      clientId: 'your-client-id-placeholder',
+      clientSecret: 'your-client-secret-placeholder',
+      realm: 'osm-api',
+      appName: 'OSM API Documentation',
+      scopeSeparator: ' ',
+      additionalQueryStringParams: {},
+      useBasicAuthenticationWithAccessCodeGrant: true
+    },
     requestInterceptor: (req) => {
-      // This will be handled by client-side JavaScript
+      // Add token from session if available
+      if (req.url.includes('onlinescoutmanager.co.uk')) {
+        // This will be handled by client-side JavaScript
+        return req;
+      }
       return req;
     }
   },
