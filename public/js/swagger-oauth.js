@@ -68,8 +68,11 @@ function addOAuthSetupMessage() {
         <small>You need to set up OAuth credentials to test API calls.</small>
         <br>
         <a href="/oauth/setup" style="color: #007bff; text-decoration: underline; margin-right: 10px;">Set up OAuth credentials</a>
-        <button onclick="openSwaggerOAuth()" style="background: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+        <button onclick="openSwaggerOAuth()" style="background: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;">
           Use Swagger OAuth
+        </button>
+        <button onclick="testOAuthProxy()" style="background: #ffc107; color: #212529; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+          Test OAuth Proxy
         </button>
       </div>
     `;
@@ -104,6 +107,14 @@ function setupRequestInterceptor() {
         .catch(error => console.error('Failed to pre-authorize Swagger UI:', error));
     }
   }, 100);
+
+  // Add global error handler for OAuth requests
+  window.addEventListener('unhandledrejection', function(event) {
+    if (event.reason && event.reason.message && event.reason.message.includes('oauth')) {
+      console.error('OAuth Promise Rejection:', event.reason);
+      addErrorMessage(`OAuth request failed: ${event.reason.message}`);
+    }
+  });
 
   // Override fetch to add OAuth token for any remaining requests
   const originalFetch = window.fetch;
@@ -218,6 +229,47 @@ function addErrorMessage(message) {
     `;
     container.appendChild(errorDiv);
   }
+}
+
+function testOAuthProxy() {
+  console.log('Testing OAuth proxy endpoint...');
+  
+  // First test if the debug endpoint is accessible
+  fetch('/oauth/debug')
+    .then(response => response.json())
+    .then(data => {
+      console.log('Debug endpoint response:', data);
+      
+      // Now test the actual proxy with dummy credentials
+      return fetch('/oauth/proxy', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          client_id: 'test-client-id',
+          client_secret: 'test-client-secret',
+          grant_type: 'client_credentials',
+          scope: 'section:member:read'
+        })
+      });
+    })
+    .then(response => {
+      console.log('OAuth proxy response status:', response.status);
+      return response.json();
+    })
+    .then(data => {
+      console.log('OAuth proxy response:', data);
+      if (data.error) {
+        addErrorMessage(`OAuth proxy test: ${data.error} - ${data.error_description || 'Check credentials'}`);
+      } else {
+        addErrorMessage('OAuth proxy is working! (Used test credentials - use real ones for actual auth)');
+      }
+    })
+    .catch(error => {
+      console.error('OAuth proxy test failed:', error);
+      addErrorMessage(`OAuth proxy test failed: ${error.message}`);
+    });
 }
 
 // Add some custom CSS for better OAuth status display

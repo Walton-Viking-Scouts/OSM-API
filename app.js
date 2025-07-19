@@ -231,6 +231,22 @@ app.get('/oauth/token-info', (req, res) => {
   });
 });
 
+// Debug endpoint to test OAuth proxy
+app.get('/oauth/debug', (req, res) => {
+  res.json({
+    status: 'OAuth proxy is accessible',
+    endpoint: '/oauth/proxy',
+    method: 'POST',
+    timestamp: new Date().toISOString(),
+    sampleRequest: {
+      client_id: 'your-client-id',
+      client_secret: 'your-client-secret', 
+      grant_type: 'client_credentials',
+      scope: 'section:member:read'
+    }
+  });
+});
+
 // Handle preflight OPTIONS requests for CORS
 app.options('/oauth/proxy', (req, res) => {
   res.header('Access-Control-Allow-Origin', '*');
