@@ -13,6 +13,7 @@ window.addEventListener('load', function() {
         return response.json();
       })
       .then(data => {
+        console.log('OAuth token info response:', data);
         if (data.authenticated) {
           // Add OAuth status indicator to the page
           addOAuthStatusIndicator(data);
@@ -20,8 +21,14 @@ window.addEventListener('load', function() {
           // Set up request interceptor to add OAuth token
           setupRequestInterceptor();
         } else {
-          // Show OAuth setup message
-          addOAuthSetupMessage();
+          // Check if we have OAuth config but no token
+          checkOAuthConfig().then(hasConfig => {
+            if (hasConfig) {
+              addOAuthConfiguredMessage();
+            } else {
+              addOAuthSetupMessage();
+            }
+          });
         }
       })
       .catch(error => {
@@ -54,6 +61,38 @@ function addOAuthStatusIndicator(tokenInfo) {
       </div>
     `;
     container.appendChild(statusDiv);
+  }
+}
+
+function checkOAuthConfig() {
+  return fetch('/oauth/config-status')
+    .then(response => response.json())
+    .then(data => data.hasConfig)
+    .catch(() => false);
+}
+
+function addOAuthConfiguredMessage() {
+  const container = document.querySelector('.swagger-ui .info');
+  if (container) {
+    const setupDiv = document.createElement('div');
+    setupDiv.className = 'oauth-setup-message';
+    setupDiv.innerHTML = `
+      <div style="background-color: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; padding: 10px; margin: 10px 0; border-radius: 4px;">
+        <strong>🔧 OAuth Configured</strong><br>
+        <small>Credentials are saved but no active token. Click below to get a token.</small>
+        <br>
+        <button onclick="getOAuthToken()" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;">
+          Get Token
+        </button>
+        <button onclick="openSwaggerOAuth()" style="background: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;">
+          Use Swagger OAuth
+        </button>
+        <button onclick="testOAuthProxy()" style="background: #ffc107; color: #212529; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+          Test OAuth Proxy
+        </button>
+      </div>
+    `;
+    container.appendChild(setupDiv);
   }
 }
 
@@ -229,6 +268,31 @@ function addErrorMessage(message) {
     `;
     container.appendChild(errorDiv);
   }
+}
+
+function getOAuthToken() {
+  console.log('Getting OAuth token using saved credentials...');
+  
+  fetch('/oauth/token')
+    .then(response => {
+      if (response.redirected) {
+        // Server redirected us, likely back to setup page with success/error
+        window.location.href = response.url;
+      } else {
+        return response.json();
+      }
+    })
+    .then(data => {
+      if (data) {
+        console.log('Token response:', data);
+        // Reload to refresh the UI
+        window.location.reload();
+      }
+    })
+    .catch(error => {
+      console.error('Get token failed:', error);
+      addErrorMessage(`Failed to get token: ${error.message}`);
+    });
 }
 
 function testOAuthProxy() {

@@ -247,6 +247,15 @@ app.get('/oauth/debug', (req, res) => {
   });
 });
 
+// Check if OAuth config exists in session
+app.get('/oauth/config-status', (req, res) => {
+  res.json({
+    hasConfig: !!(req.session.oauthConfig?.clientId && req.session.oauthConfig?.clientSecret),
+    hasToken: !!req.session.accessToken,
+    sessionId: req.sessionID
+  });
+});
+
 // Handle preflight OPTIONS requests for CORS
 app.options('/oauth/proxy', (req, res) => {
   res.header('Access-Control-Allow-Origin', '*');
