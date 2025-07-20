@@ -24,157 +24,6 @@
     }
   ],
   "paths": {
-    "/users/auth/": {
-      "post": {
-        "summary": "POST auth",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "now_ts": {
-                      "type": "number"
-                    },
-                    "security_question": {
-                      "type": "string"
-                    },
-                    "security_letters": {
-                      "type": "array",
-                      "items": {
-                        "type": "number"
-                      }
-                    },
-                    "security_recoverable": {
-                      "type": "boolean"
-                    },
-                    "security_number": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "action",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "device_id": {
-                    "type": "string"
-                  },
-                  "seen": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/generic/startup/": {
-      "get": {
-        "summary": "GET startup",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {}
-          }
-        },
-        "parameters": [
-          {
-            "name": "action",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "client_time",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ]
-      }
-    },
-    "/users/notifications/": {
-      "get": {
-        "summary": "GET notifications",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "boolean"
-                    },
-                    "error": {
-                      "type": "object",
-                      "nullable": true
-                    },
-                    "data": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "meta": {
-                      "type": "array",
-                      "items": {}
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "action",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "section_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ]
-      }
-    },
     "/dashboard/": {
       "get": {
         "summary": "GET dashboard",
@@ -565,72 +414,13 @@
         }
       }
     },
-    "/members/contact/": {
+    "/generic/startup/": {
       "get": {
-        "summary": "GET contact",
+        "summary": "GET startup",
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "identifier": {
-                      "type": "string"
-                    },
-                    "photos": {
-                      "type": "boolean"
-                    },
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "firstname": {
-                            "type": "string"
-                          },
-                          "lastname": {
-                            "type": "string"
-                          },
-                          "photo_guid": {
-                            "type": "string"
-                          },
-                          "patrolid": {
-                            "type": "number"
-                          },
-                          "patrol": {
-                            "type": "string"
-                          },
-                          "sectionid": {
-                            "type": "number"
-                          },
-                          "enddate": {
-                            "type": "object",
-                            "nullable": true
-                          },
-                          "age": {
-                            "type": "string"
-                          },
-                          "patrol_role_level_label": {
-                            "type": "string"
-                          },
-                          "active": {
-                            "type": "boolean"
-                          },
-                          "scoutid": {
-                            "type": "number"
-                          },
-                          "full_name": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            "description": "OK",
+            "content": {}
           }
         },
         "parameters": [
@@ -643,143 +433,38 @@
             }
           },
           {
-            "name": "sort",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sectionid",
+            "name": "client_time",
             "in": "query",
             "required": false,
             "schema": {
               "type": "number"
-            }
-          },
-          {
-            "name": "termid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "section",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
             }
           }
         ]
-      },
-      "post": {
-        "summary": "POST contact",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    },
-                    "meta": {
-                      "type": "object",
-                      "properties": {
-                        "last_updated": {
-                          "type": "string"
-                        },
-                        "last_updated_by_name": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "action",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "scoutid": {
-                    "type": "string"
-                  },
-                  "column": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "string"
-                  },
-                  "sectionid": {
-                    "type": "string"
-                  },
-                  "context": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     },
-    "/settings/patrols/": {
+    "/generic/terms/": {
       "get": {
-        "summary": "GET patrols",
+        "summary": "GET terms",
+        "description": "Retrieve terms information",
         "responses": {
           "200": {
-            "description": "",
+            "description": "Terms data",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "patrols": {
+                    "status": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "data": {
                       "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "patrolid": {
-                            "type": "string"
-                          },
-                          "sectionid": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "active": {
-                            "type": "string"
-                          },
-                          "points": {
-                            "type": "string"
-                          },
-                          "census_costs": {
-                            "type": "boolean"
-                          }
-                        }
-                      }
+                      "items": {}
                     }
                   }
                 }
@@ -797,7 +482,7 @@
             }
           },
           {
-            "name": "sectionid",
+            "name": "section_id",
             "in": "query",
             "required": false,
             "schema": {
@@ -1012,6 +697,185 @@
             }
           }
         ]
+      }
+    },
+    "/members/contact/": {
+      "get": {
+        "summary": "GET contact",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "identifier": {
+                      "type": "string"
+                    },
+                    "photos": {
+                      "type": "boolean"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "firstname": {
+                            "type": "string"
+                          },
+                          "lastname": {
+                            "type": "string"
+                          },
+                          "photo_guid": {
+                            "type": "string"
+                          },
+                          "patrolid": {
+                            "type": "number"
+                          },
+                          "patrol": {
+                            "type": "string"
+                          },
+                          "sectionid": {
+                            "type": "number"
+                          },
+                          "enddate": {
+                            "type": "object",
+                            "nullable": true
+                          },
+                          "age": {
+                            "type": "string"
+                          },
+                          "patrol_role_level_label": {
+                            "type": "string"
+                          },
+                          "active": {
+                            "type": "boolean"
+                          },
+                          "scoutid": {
+                            "type": "number"
+                          },
+                          "full_name": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sectionid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "termid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "section",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST contact",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "last_updated": {
+                          "type": "string"
+                        },
+                        "last_updated_by_name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "scoutid": {
+                    "type": "string"
+                  },
+                  "column": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "sectionid": {
+                    "type": "string"
+                  },
+                  "context": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/members/contact/grid/": {
@@ -1274,6 +1138,144 @@
                     "type": "string"
                   },
                   "term_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/members/flexirecords/": {
+      "get": {
+        "summary": "GET flexirecords",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "identifier": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "extraid": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sectionid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "archived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST flexirecords",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "f_1": {
+                            "type": "number"
+                          },
+                          "scoutid": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "termid": {
+                    "type": "string"
+                  },
+                  "section": {
+                    "type": "string"
+                  },
+                  "sectionid": {
+                    "type": "string"
+                  },
+                  "extraid": {
+                    "type": "string"
+                  },
+                  "scoutid": {
+                    "type": "string"
+                  },
+                  "column": {
+                    "type": "string"
+                  },
+                  "value": {
                     "type": "string"
                   }
                 }
@@ -1710,32 +1712,40 @@
         ]
       }
     },
-    "/members/flexirecords/": {
+    "/members/list/": {
       "get": {
-        "summary": "GET flexirecords",
+        "summary": "GET list of members",
+        "description": "Retrieve list of members in a section",
         "responses": {
           "200": {
-            "description": "",
+            "description": "Members list data",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "identifier": {
-                      "type": "string"
+                    "status": {
+                      "type": "boolean"
                     },
-                    "label": {
-                      "type": "string"
+                    "error": {
+                      "type": "object",
+                      "nullable": true
                     },
-                    "items": {
+                    "data": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
-                          "extraid": {
+                          "member_id": {
+                            "type": "number"
+                          },
+                          "firstname": {
                             "type": "string"
                           },
-                          "name": {
+                          "lastname": {
+                            "type": "string"
+                          },
+                          "patrol": {
                             "type": "string"
                           }
                         }
@@ -1757,7 +1767,7 @@
             }
           },
           {
-            "name": "sectionid",
+            "name": "section_id",
             "in": "query",
             "required": false,
             "schema": {
@@ -1765,190 +1775,7 @@
             }
           },
           {
-            "name": "archived",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ]
-      },
-      "post": {
-        "summary": "POST flexirecords",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "f_1": {
-                            "type": "number"
-                          },
-                          "scoutid": {
-                            "type": "number"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "action",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "termid": {
-                    "type": "string"
-                  },
-                  "section": {
-                    "type": "string"
-                  },
-                  "sectionid": {
-                    "type": "string"
-                  },
-                  "extraid": {
-                    "type": "string"
-                  },
-                  "scoutid": {
-                    "type": "string"
-                  },
-                  "column": {
-                    "type": "string"
-                  },
-                  "value": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/programme/": {
-      "get": {
-        "summary": "GET programme",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "eveningid": {
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
-                          },
-                          "parentsrequired": {
-                            "type": "string"
-                          },
-                          "meetingdate": {
-                            "type": "string"
-                          },
-                          "parentsattendingcount": {
-                            "type": "string"
-                          },
-                          "primary_leader": {
-                            "type": "object",
-                            "properties": {
-                              "member_id": {
-                                "type": "number"
-                              },
-                              "photo_guid": {
-                                "type": "string"
-                              },
-                              "first_name": {
-                                "type": "string"
-                              },
-                              "last_name": {
-                                "type": "string"
-                              }
-                            }
-                          },
-                          "badges": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "name": {
-                                  "type": "string"
-                                },
-                                "img": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "unavailable_leaders": {
-                            "type": "number"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "action",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sectionid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "termid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "verbose",
+            "name": "term_id",
             "in": "query",
             "required": false,
             "schema": {
@@ -1958,98 +1785,27 @@
         ]
       }
     },
-    "/events/summary/": {
+    "/members/flexirecords/structure/": {
       "get": {
-        "summary": "GET summary",
+        "summary": "GET flexi record structure",
+        "description": "Get flexi record structure configuration",
         "responses": {
           "200": {
-            "description": "",
+            "description": "Flexi structure data",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "identifier": {
-                      "type": "string"
+                    "status": {
+                      "type": "boolean"
                     },
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "eventid": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "date": {
-                            "type": "string"
-                          },
-                          "startdate_g": {
-                            "type": "string"
-                          },
-                          "startdate": {
-                            "type": "string"
-                          },
-                          "enddate": {
-                            "type": "string"
-                          },
-                          "starttime": {
-                            "type": "string"
-                          },
-                          "endtime": {
-                            "type": "string"
-                          },
-                          "cost": {
-                            "type": "string"
-                          },
-                          "location": {
-                            "type": "string"
-                          },
-                          "approval_status": {
-                            "type": "object",
-                            "nullable": true
-                          },
-                          "rota_offered": {
-                            "type": "number"
-                          },
-                          "rota_accepted": {
-                            "type": "number"
-                          },
-                          "rota_required": {
-                            "type": "object",
-                            "nullable": true
-                          },
-                          "yes": {
-                            "type": "number"
-                          },
-                          "yes_members": {
-                            "type": "number"
-                          },
-                          "yes_yls": {
-                            "type": "number"
-                          },
-                          "yes_leaders": {
-                            "type": "number"
-                          },
-                          "reserved": {
-                            "type": "number"
-                          },
-                          "no": {
-                            "type": "number"
-                          },
-                          "invited": {
-                            "type": "number"
-                          },
-                          "shown": {
-                            "type": "number"
-                          },
-                          "x": {
-                            "type": "number"
-                          }
-                        }
-                      }
+                    "error": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "object"
                     }
                   }
                 }
@@ -2067,7 +1823,55 @@
             }
           },
           {
-            "name": "sectionid",
+            "name": "section_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/members/flexirecords/single/": {
+      "get": {
+        "summary": "GET single flexi record",
+        "description": "Retrieve a single flexi record",
+        "responses": {
+          "200": {
+            "description": "Single flexi record data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "section_id",
             "in": "query",
             "required": false,
             "schema": {
@@ -2075,7 +1879,7 @@
             }
           },
           {
-            "name": "termid",
+            "name": "record_id",
             "in": "query",
             "required": false,
             "schema": {
@@ -2349,9 +2153,9 @@
         ]
       }
     },
-    "/programme/activities/": {
+    "/events/summary/": {
       "get": {
-        "summary": "GET activities",
+        "summary": "GET summary",
         "responses": {
           "200": {
             "description": "",
@@ -2360,85 +2164,160 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "identifier": {
+                      "type": "string"
+                    },
                     "items": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
-                          "activityid": {
+                          "eventid": {
                             "type": "string"
                           },
-                          "title": {
+                          "name": {
                             "type": "string"
                           },
-                          "description": {
+                          "date": {
                             "type": "string"
                           },
-                          "runningtime": {
+                          "startdate_g": {
+                            "type": "string"
+                          },
+                          "startdate": {
+                            "type": "string"
+                          },
+                          "enddate": {
+                            "type": "string"
+                          },
+                          "starttime": {
+                            "type": "string"
+                          },
+                          "endtime": {
+                            "type": "string"
+                          },
+                          "cost": {
                             "type": "string"
                           },
                           "location": {
                             "type": "string"
                           },
-                          "shared": {
-                            "type": "string"
+                          "approval_status": {
+                            "type": "object",
+                            "nullable": true
                           },
-                          "visibility": {
-                            "type": "string"
-                          },
-                          "site_type": {
-                            "type": "string"
-                          },
-                          "rating": {
+                          "rota_offered": {
                             "type": "number"
                           },
-                          "icons": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
+                          "rota_accepted": {
+                            "type": "number"
                           },
-                          "tags": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          },
-                          "review_summary": {
+                          "rota_required": {
                             "type": "object",
-                            "properties": {
-                              "writeup": {
-                                "type": "object",
-                                "properties": {
-                                  "rating": {
-                                    "type": "number"
-                                  },
-                                  "number_reviews": {
-                                    "type": "number"
-                                  }
-                                }
-                              },
-                              "activity": {
-                                "type": "object",
-                                "properties": {
-                                  "rating": {
-                                    "type": "number"
-                                  },
-                                  "number_reviews": {
-                                    "type": "number"
-                                  }
-                                }
-                              }
-                            }
+                            "nullable": true
+                          },
+                          "yes": {
+                            "type": "number"
+                          },
+                          "yes_members": {
+                            "type": "number"
+                          },
+                          "yes_yls": {
+                            "type": "number"
+                          },
+                          "yes_leaders": {
+                            "type": "number"
+                          },
+                          "reserved": {
+                            "type": "number"
+                          },
+                          "no": {
+                            "type": "number"
+                          },
+                          "invited": {
+                            "type": "number"
+                          },
+                          "shown": {
+                            "type": "number"
+                          },
+                          "x": {
+                            "type": "number"
                           }
                         }
                       }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sectionid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "termid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/events/": {
+      "get": {
+        "summary": "GET events",
+        "description": "Retrieve events list",
+        "responses": {
+          "200": {
+            "description": "Events data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean"
                     },
-                    "num": {
-                      "type": "number"
+                    "error": {
+                      "type": "object",
+                      "nullable": true
                     },
-                    "query": {
-                      "type": "string"
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "eventid": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "date": {
+                            "type": "string"
+                          },
+                          "end_date": {
+                            "type": "string"
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -2464,1107 +2343,48 @@
             }
           },
           {
-            "name": "section",
+            "name": "term_id",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           }
         ]
       }
     },
-    "/badges/records/": {
+    "/events/attendance/": {
       "get": {
-        "summary": "GET records",
+        "summary": "GET event attendance",
+        "description": "Get event attendance details",
         "responses": {
           "200": {
-            "description": "",
+            "description": "Event attendance data",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "badgeOrder": {
-                      "type": "string"
+                    "status": {
+                      "type": "boolean"
                     },
-                    "structure": {
+                    "error": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "data": {
                       "type": "object",
                       "properties": {
-                        "1529_0": {
+                        "attendance": {
                           "type": "array",
                           "items": {
                             "type": "object",
                             "properties": {
-                              "rows": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "field": {
-                                      "type": "string"
-                                    },
-                                    "width": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
+                              "member_id": {
+                                "type": "number"
                               },
-                              "noscroll": {
-                                "type": "boolean"
-                              }
-                            }
-                          }
-                        },
-                        "1514_0": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "rows": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "field": {
-                                      "type": "string"
-                                    },
-                                    "width": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
-                              "noscroll": {
-                                "type": "boolean"
-                              }
-                            }
-                          }
-                        },
-                        "1515_0": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "rows": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "field": {
-                                      "type": "string"
-                                    },
-                                    "width": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
-                              "noscroll": {
-                                "type": "boolean"
-                              }
-                            }
-                          }
-                        },
-                        "1518_0": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "rows": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "field": {
-                                      "type": "string"
-                                    },
-                                    "width": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
-                              "noscroll": {
-                                "type": "boolean"
-                              }
-                            }
-                          }
-                        },
-                        "1516_0": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "rows": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "field": {
-                                      "type": "string"
-                                    },
-                                    "width": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
-                              "noscroll": {
-                                "type": "boolean"
-                              }
-                            }
-                          }
-                        },
-                        "1519_0": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "rows": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "field": {
-                                      "type": "string"
-                                    },
-                                    "width": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
-                              "noscroll": {
-                                "type": "boolean"
-                              }
-                            }
-                          }
-                        },
-                        "1517_1": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "rows": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "field": {
-                                      "type": "string"
-                                    },
-                                    "width": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
-                              "noscroll": {
-                                "type": "boolean"
-                              }
-                            }
-                          }
-                        },
-                        "17072_0": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "rows": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "field": {
-                                      "type": "string"
-                                    },
-                                    "width": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "15842_0": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "rows": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "field": {
-                                      "type": "string"
-                                    },
-                                    "width": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "12442_0": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "rows": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "field": {
-                                      "type": "string"
-                                    },
-                                    "width": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
-                              "noscroll": {
-                                "type": "boolean"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "details": {
-                      "type": "object",
-                      "properties": {
-                        "1529_0": {
-                          "type": "object",
-                          "properties": {
-                            "badge_id": {
-                              "type": "string"
-                            },
-                            "badge_version": {
-                              "type": "string"
-                            },
-                            "shortname": {
-                              "type": "string"
-                            },
-                            "badge_identifier": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "picture": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "parents_description": {
-                              "type": "string"
-                            },
-                            "config": {
-                              "type": "string"
-                            },
-                            "portal_config": {
-                              "type": "string"
-                            },
-                            "userid": {
-                              "type": "string"
-                            },
-                            "sharing": {
-                              "type": "string"
-                            },
-                            "latest": {
-                              "type": "string"
-                            },
-                            "badge_order": {
-                              "type": "string"
-                            },
-                            "group_name": {
-                              "type": "string"
-                            },
-                            "created_at": {
-                              "type": "string"
-                            },
-                            "lastupdated": {
-                              "type": "string"
-                            },
-                            "type_id": {
-                              "type": "string"
-                            },
-                            "badge_id_version": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "1514_0": {
-                          "type": "object",
-                          "properties": {
-                            "badge_id": {
-                              "type": "string"
-                            },
-                            "badge_version": {
-                              "type": "string"
-                            },
-                            "shortname": {
-                              "type": "string"
-                            },
-                            "badge_identifier": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "picture": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "parents_description": {
-                              "type": "string"
-                            },
-                            "config": {
-                              "type": "string"
-                            },
-                            "portal_config": {
-                              "type": "string"
-                            },
-                            "userid": {
-                              "type": "string"
-                            },
-                            "sharing": {
-                              "type": "string"
-                            },
-                            "latest": {
-                              "type": "string"
-                            },
-                            "badge_order": {
-                              "type": "string"
-                            },
-                            "group_name": {
-                              "type": "string"
-                            },
-                            "created_at": {
-                              "type": "string"
-                            },
-                            "lastupdated": {
-                              "type": "string"
-                            },
-                            "type_id": {
-                              "type": "string"
-                            },
-                            "badge_id_version": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "1515_0": {
-                          "type": "object",
-                          "properties": {
-                            "badge_id": {
-                              "type": "string"
-                            },
-                            "badge_version": {
-                              "type": "string"
-                            },
-                            "shortname": {
-                              "type": "string"
-                            },
-                            "badge_identifier": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "picture": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "parents_description": {
-                              "type": "string"
-                            },
-                            "config": {
-                              "type": "string"
-                            },
-                            "portal_config": {
-                              "type": "string"
-                            },
-                            "userid": {
-                              "type": "string"
-                            },
-                            "sharing": {
-                              "type": "string"
-                            },
-                            "latest": {
-                              "type": "string"
-                            },
-                            "badge_order": {
-                              "type": "string"
-                            },
-                            "group_name": {
-                              "type": "string"
-                            },
-                            "created_at": {
-                              "type": "string"
-                            },
-                            "lastupdated": {
-                              "type": "string"
-                            },
-                            "type_id": {
-                              "type": "string"
-                            },
-                            "badge_id_version": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "1518_0": {
-                          "type": "object",
-                          "properties": {
-                            "badge_id": {
-                              "type": "string"
-                            },
-                            "badge_version": {
-                              "type": "string"
-                            },
-                            "shortname": {
-                              "type": "string"
-                            },
-                            "badge_identifier": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "picture": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "parents_description": {
-                              "type": "string"
-                            },
-                            "config": {
-                              "type": "string"
-                            },
-                            "portal_config": {
-                              "type": "string"
-                            },
-                            "userid": {
-                              "type": "string"
-                            },
-                            "sharing": {
-                              "type": "string"
-                            },
-                            "latest": {
-                              "type": "string"
-                            },
-                            "badge_order": {
-                              "type": "string"
-                            },
-                            "group_name": {
-                              "type": "string"
-                            },
-                            "created_at": {
-                              "type": "string"
-                            },
-                            "lastupdated": {
-                              "type": "string"
-                            },
-                            "type_id": {
-                              "type": "string"
-                            },
-                            "badge_id_version": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "1516_0": {
-                          "type": "object",
-                          "properties": {
-                            "badge_id": {
-                              "type": "string"
-                            },
-                            "badge_version": {
-                              "type": "string"
-                            },
-                            "shortname": {
-                              "type": "string"
-                            },
-                            "badge_identifier": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "picture": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "parents_description": {
-                              "type": "string"
-                            },
-                            "config": {
-                              "type": "string"
-                            },
-                            "portal_config": {
-                              "type": "string"
-                            },
-                            "userid": {
-                              "type": "string"
-                            },
-                            "sharing": {
-                              "type": "string"
-                            },
-                            "latest": {
-                              "type": "string"
-                            },
-                            "badge_order": {
-                              "type": "string"
-                            },
-                            "group_name": {
-                              "type": "string"
-                            },
-                            "created_at": {
-                              "type": "string"
-                            },
-                            "lastupdated": {
-                              "type": "string"
-                            },
-                            "type_id": {
-                              "type": "string"
-                            },
-                            "badge_id_version": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "1519_0": {
-                          "type": "object",
-                          "properties": {
-                            "badge_id": {
-                              "type": "string"
-                            },
-                            "badge_version": {
-                              "type": "string"
-                            },
-                            "shortname": {
-                              "type": "string"
-                            },
-                            "badge_identifier": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "picture": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "parents_description": {
-                              "type": "string"
-                            },
-                            "config": {
-                              "type": "string"
-                            },
-                            "portal_config": {
-                              "type": "string"
-                            },
-                            "userid": {
-                              "type": "string"
-                            },
-                            "sharing": {
-                              "type": "string"
-                            },
-                            "latest": {
-                              "type": "string"
-                            },
-                            "badge_order": {
-                              "type": "string"
-                            },
-                            "group_name": {
-                              "type": "string"
-                            },
-                            "created_at": {
-                              "type": "string"
-                            },
-                            "lastupdated": {
-                              "type": "string"
-                            },
-                            "type_id": {
-                              "type": "string"
-                            },
-                            "badge_id_version": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "1517_1": {
-                          "type": "object",
-                          "properties": {
-                            "badge_id": {
-                              "type": "string"
-                            },
-                            "badge_version": {
-                              "type": "string"
-                            },
-                            "shortname": {
-                              "type": "string"
-                            },
-                            "badge_identifier": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "picture": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "parents_description": {
-                              "type": "string"
-                            },
-                            "config": {
-                              "type": "string"
-                            },
-                            "portal_config": {
-                              "type": "string"
-                            },
-                            "userid": {
-                              "type": "string"
-                            },
-                            "sharing": {
-                              "type": "string"
-                            },
-                            "latest": {
-                              "type": "object",
-                              "nullable": true
-                            },
-                            "badge_order": {
-                              "type": "string"
-                            },
-                            "group_name": {
-                              "type": "string"
-                            },
-                            "created_at": {
-                              "type": "string"
-                            },
-                            "lastupdated": {
-                              "type": "string"
-                            },
-                            "type_id": {
-                              "type": "string"
-                            },
-                            "badge_id_version": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "17072_0": {
-                          "type": "object",
-                          "properties": {
-                            "badge_id": {
-                              "type": "string"
-                            },
-                            "badge_version": {
-                              "type": "string"
-                            },
-                            "shortname": {
-                              "type": "string"
-                            },
-                            "badge_identifier": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "picture": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "parents_description": {
-                              "type": "string"
-                            },
-                            "config": {
-                              "type": "string"
-                            },
-                            "portal_config": {
-                              "type": "string"
-                            },
-                            "userid": {
-                              "type": "string"
-                            },
-                            "sharing": {
-                              "type": "string"
-                            },
-                            "latest": {
-                              "type": "object",
-                              "nullable": true
-                            },
-                            "badge_order": {
-                              "type": "string"
-                            },
-                            "group_name": {
-                              "type": "string"
-                            },
-                            "created_at": {
-                              "type": "string"
-                            },
-                            "lastupdated": {
-                              "type": "string"
-                            },
-                            "badge_id_version": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "15842_0": {
-                          "type": "object",
-                          "properties": {
-                            "badge_id": {
-                              "type": "string"
-                            },
-                            "badge_version": {
-                              "type": "string"
-                            },
-                            "shortname": {
-                              "type": "string"
-                            },
-                            "badge_identifier": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "picture": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "parents_description": {
-                              "type": "string"
-                            },
-                            "config": {
-                              "type": "string"
-                            },
-                            "portal_config": {
-                              "type": "string"
-                            },
-                            "userid": {
-                              "type": "string"
-                            },
-                            "sharing": {
-                              "type": "string"
-                            },
-                            "latest": {
-                              "type": "object",
-                              "nullable": true
-                            },
-                            "badge_order": {
-                              "type": "string"
-                            },
-                            "group_name": {
-                              "type": "string"
-                            },
-                            "created_at": {
-                              "type": "string"
-                            },
-                            "lastupdated": {
-                              "type": "string"
-                            },
-                            "badge_id_version": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "12442_0": {
-                          "type": "object",
-                          "properties": {
-                            "badge_id": {
-                              "type": "string"
-                            },
-                            "badge_version": {
-                              "type": "string"
-                            },
-                            "shortname": {
-                              "type": "string"
-                            },
-                            "badge_identifier": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "picture": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "parents_description": {
-                              "type": "string"
-                            },
-                            "config": {
-                              "type": "string"
-                            },
-                            "portal_config": {
-                              "type": "string"
-                            },
-                            "userid": {
-                              "type": "string"
-                            },
-                            "sharing": {
-                              "type": "string"
-                            },
-                            "latest": {
-                              "type": "object",
-                              "nullable": true
-                            },
-                            "badge_order": {
-                              "type": "string"
-                            },
-                            "group_name": {
-                              "type": "string"
-                            },
-                            "created_at": {
-                              "type": "string"
-                            },
-                            "lastupdated": {
-                              "type": "string"
-                            },
-                            "badge_id_version": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "homework": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "links": {
-                      "type": "object",
-                      "properties": {
-                        "1517_1": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "badge_id": {
-                                  "type": "string"
-                                },
-                                "badge_version": {
-                                  "type": "string"
-                                },
-                                "column_id": {
-                                  "type": "string"
-                                },
-                                "id": {
-                                  "type": "string"
-                                },
-                                "date": {
-                                  "type": "string"
-                                },
-                                "title": {
-                                  "type": "string"
-                                },
-                                "activity_type": {
-                                  "type": "string"
-                                },
-                                "activity_source": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "1516_0": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "badge_id": {
-                                  "type": "string"
-                                },
-                                "badge_version": {
-                                  "type": "string"
-                                },
-                                "column_id": {
-                                  "type": "string"
-                                },
-                                "id": {
-                                  "type": "string"
-                                },
-                                "date": {
-                                  "type": "string"
-                                },
-                                "title": {
-                                  "type": "string"
-                                },
-                                "activity_type": {
-                                  "type": "string"
-                                },
-                                "activity_source": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "1519_0": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "badge_id": {
-                                  "type": "string"
-                                },
-                                "badge_version": {
-                                  "type": "string"
-                                },
-                                "column_id": {
-                                  "type": "string"
-                                },
-                                "id": {
-                                  "type": "string"
-                                },
-                                "date": {
-                                  "type": "string"
-                                },
-                                "title": {
-                                  "type": "string"
-                                },
-                                "activity_type": {
-                                  "type": "string"
-                                },
-                                "activity_source": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "1514_0": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "badge_id": {
-                                  "type": "string"
-                                },
-                                "badge_version": {
-                                  "type": "string"
-                                },
-                                "column_id": {
-                                  "type": "string"
-                                },
-                                "id": {
-                                  "type": "string"
-                                },
-                                "date": {
-                                  "type": "string"
-                                },
-                                "title": {
-                                  "type": "string"
-                                },
-                                "activity_type": {
-                                  "type": "string"
-                                },
-                                "activity_source": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "1515_0": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "badge_id": {
-                                  "type": "string"
-                                },
-                                "badge_version": {
-                                  "type": "string"
-                                },
-                                "column_id": {
-                                  "type": "string"
-                                },
-                                "id": {
-                                  "type": "string"
-                                },
-                                "date": {
-                                  "type": "string"
-                                },
-                                "title": {
-                                  "type": "string"
-                                },
-                                "activity_type": {
-                                  "type": "string"
-                                },
-                                "activity_source": {
-                                  "type": "string"
-                                }
+                              "attending": {
+                                "type": "string"
                               }
                             }
                           }
@@ -3587,31 +2407,7 @@
             }
           },
           {
-            "name": "a",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "section",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "type_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "term_id",
+            "name": "event_id",
             "in": "query",
             "required": false,
             "schema": {
@@ -4262,176 +3058,6 @@
             }
           }
         ]
-      }
-    },
-    "/badges/stock/": {
-      "get": {
-        "summary": "GET stock",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "identifier": {
-                      "type": "string"
-                    },
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "_filterString": {
-                            "type": "string"
-                          },
-                          "shortname": {
-                            "type": "string"
-                          },
-                          "badge_id_level": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "picture": {
-                            "type": "string"
-                          },
-                          "stock": {
-                            "type": "number"
-                          },
-                          "desired": {
-                            "type": "number"
-                          },
-                          "badge_id": {
-                            "type": "string"
-                          },
-                          "level": {
-                            "type": "number"
-                          },
-                          "buy": {
-                            "type": "number"
-                          },
-                          "due": {
-                            "type": "number"
-                          },
-                          "shared_by": {
-                            "type": "string"
-                          },
-                          "shared": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "action",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "section",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "section_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "term_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "seeIfShared",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ]
-      },
-      "post": {
-        "summary": "POST stock",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "action",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "stock": {
-                    "type": "string"
-                  },
-                  "badge_id": {
-                    "type": "string"
-                  },
-                  "level": {
-                    "type": "string"
-                  },
-                  "section_id": {
-                    "type": "string"
-                  },
-                  "section": {
-                    "type": "string"
-                  },
-                  "type": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/badges/due/": {
@@ -5946,6 +4572,1848 @@
           },
           {
             "name": "termid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/badges/records/": {
+      "get": {
+        "summary": "GET records",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "badgeOrder": {
+                      "type": "string"
+                    },
+                    "structure": {
+                      "type": "object",
+                      "properties": {
+                        "1529_0": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rows": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "field": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "noscroll": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        },
+                        "1514_0": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rows": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "field": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "noscroll": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        },
+                        "1515_0": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rows": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "field": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "noscroll": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        },
+                        "1518_0": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rows": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "field": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "noscroll": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        },
+                        "1516_0": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rows": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "field": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "noscroll": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        },
+                        "1519_0": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rows": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "field": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "noscroll": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        },
+                        "1517_1": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rows": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "field": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "noscroll": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        },
+                        "17072_0": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rows": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "field": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "15842_0": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rows": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "field": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "12442_0": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "rows": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "field": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "noscroll": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "1529_0": {
+                          "type": "object",
+                          "properties": {
+                            "badge_id": {
+                              "type": "string"
+                            },
+                            "badge_version": {
+                              "type": "string"
+                            },
+                            "shortname": {
+                              "type": "string"
+                            },
+                            "badge_identifier": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parents_description": {
+                              "type": "string"
+                            },
+                            "config": {
+                              "type": "string"
+                            },
+                            "portal_config": {
+                              "type": "string"
+                            },
+                            "userid": {
+                              "type": "string"
+                            },
+                            "sharing": {
+                              "type": "string"
+                            },
+                            "latest": {
+                              "type": "string"
+                            },
+                            "badge_order": {
+                              "type": "string"
+                            },
+                            "group_name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "lastupdated": {
+                              "type": "string"
+                            },
+                            "type_id": {
+                              "type": "string"
+                            },
+                            "badge_id_version": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "1514_0": {
+                          "type": "object",
+                          "properties": {
+                            "badge_id": {
+                              "type": "string"
+                            },
+                            "badge_version": {
+                              "type": "string"
+                            },
+                            "shortname": {
+                              "type": "string"
+                            },
+                            "badge_identifier": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parents_description": {
+                              "type": "string"
+                            },
+                            "config": {
+                              "type": "string"
+                            },
+                            "portal_config": {
+                              "type": "string"
+                            },
+                            "userid": {
+                              "type": "string"
+                            },
+                            "sharing": {
+                              "type": "string"
+                            },
+                            "latest": {
+                              "type": "string"
+                            },
+                            "badge_order": {
+                              "type": "string"
+                            },
+                            "group_name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "lastupdated": {
+                              "type": "string"
+                            },
+                            "type_id": {
+                              "type": "string"
+                            },
+                            "badge_id_version": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "1515_0": {
+                          "type": "object",
+                          "properties": {
+                            "badge_id": {
+                              "type": "string"
+                            },
+                            "badge_version": {
+                              "type": "string"
+                            },
+                            "shortname": {
+                              "type": "string"
+                            },
+                            "badge_identifier": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parents_description": {
+                              "type": "string"
+                            },
+                            "config": {
+                              "type": "string"
+                            },
+                            "portal_config": {
+                              "type": "string"
+                            },
+                            "userid": {
+                              "type": "string"
+                            },
+                            "sharing": {
+                              "type": "string"
+                            },
+                            "latest": {
+                              "type": "string"
+                            },
+                            "badge_order": {
+                              "type": "string"
+                            },
+                            "group_name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "lastupdated": {
+                              "type": "string"
+                            },
+                            "type_id": {
+                              "type": "string"
+                            },
+                            "badge_id_version": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "1518_0": {
+                          "type": "object",
+                          "properties": {
+                            "badge_id": {
+                              "type": "string"
+                            },
+                            "badge_version": {
+                              "type": "string"
+                            },
+                            "shortname": {
+                              "type": "string"
+                            },
+                            "badge_identifier": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parents_description": {
+                              "type": "string"
+                            },
+                            "config": {
+                              "type": "string"
+                            },
+                            "portal_config": {
+                              "type": "string"
+                            },
+                            "userid": {
+                              "type": "string"
+                            },
+                            "sharing": {
+                              "type": "string"
+                            },
+                            "latest": {
+                              "type": "string"
+                            },
+                            "badge_order": {
+                              "type": "string"
+                            },
+                            "group_name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "lastupdated": {
+                              "type": "string"
+                            },
+                            "type_id": {
+                              "type": "string"
+                            },
+                            "badge_id_version": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "1516_0": {
+                          "type": "object",
+                          "properties": {
+                            "badge_id": {
+                              "type": "string"
+                            },
+                            "badge_version": {
+                              "type": "string"
+                            },
+                            "shortname": {
+                              "type": "string"
+                            },
+                            "badge_identifier": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parents_description": {
+                              "type": "string"
+                            },
+                            "config": {
+                              "type": "string"
+                            },
+                            "portal_config": {
+                              "type": "string"
+                            },
+                            "userid": {
+                              "type": "string"
+                            },
+                            "sharing": {
+                              "type": "string"
+                            },
+                            "latest": {
+                              "type": "string"
+                            },
+                            "badge_order": {
+                              "type": "string"
+                            },
+                            "group_name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "lastupdated": {
+                              "type": "string"
+                            },
+                            "type_id": {
+                              "type": "string"
+                            },
+                            "badge_id_version": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "1519_0": {
+                          "type": "object",
+                          "properties": {
+                            "badge_id": {
+                              "type": "string"
+                            },
+                            "badge_version": {
+                              "type": "string"
+                            },
+                            "shortname": {
+                              "type": "string"
+                            },
+                            "badge_identifier": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parents_description": {
+                              "type": "string"
+                            },
+                            "config": {
+                              "type": "string"
+                            },
+                            "portal_config": {
+                              "type": "string"
+                            },
+                            "userid": {
+                              "type": "string"
+                            },
+                            "sharing": {
+                              "type": "string"
+                            },
+                            "latest": {
+                              "type": "string"
+                            },
+                            "badge_order": {
+                              "type": "string"
+                            },
+                            "group_name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "lastupdated": {
+                              "type": "string"
+                            },
+                            "type_id": {
+                              "type": "string"
+                            },
+                            "badge_id_version": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "1517_1": {
+                          "type": "object",
+                          "properties": {
+                            "badge_id": {
+                              "type": "string"
+                            },
+                            "badge_version": {
+                              "type": "string"
+                            },
+                            "shortname": {
+                              "type": "string"
+                            },
+                            "badge_identifier": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parents_description": {
+                              "type": "string"
+                            },
+                            "config": {
+                              "type": "string"
+                            },
+                            "portal_config": {
+                              "type": "string"
+                            },
+                            "userid": {
+                              "type": "string"
+                            },
+                            "sharing": {
+                              "type": "string"
+                            },
+                            "latest": {
+                              "type": "object",
+                              "nullable": true
+                            },
+                            "badge_order": {
+                              "type": "string"
+                            },
+                            "group_name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "lastupdated": {
+                              "type": "string"
+                            },
+                            "type_id": {
+                              "type": "string"
+                            },
+                            "badge_id_version": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "17072_0": {
+                          "type": "object",
+                          "properties": {
+                            "badge_id": {
+                              "type": "string"
+                            },
+                            "badge_version": {
+                              "type": "string"
+                            },
+                            "shortname": {
+                              "type": "string"
+                            },
+                            "badge_identifier": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parents_description": {
+                              "type": "string"
+                            },
+                            "config": {
+                              "type": "string"
+                            },
+                            "portal_config": {
+                              "type": "string"
+                            },
+                            "userid": {
+                              "type": "string"
+                            },
+                            "sharing": {
+                              "type": "string"
+                            },
+                            "latest": {
+                              "type": "object",
+                              "nullable": true
+                            },
+                            "badge_order": {
+                              "type": "string"
+                            },
+                            "group_name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "lastupdated": {
+                              "type": "string"
+                            },
+                            "badge_id_version": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "15842_0": {
+                          "type": "object",
+                          "properties": {
+                            "badge_id": {
+                              "type": "string"
+                            },
+                            "badge_version": {
+                              "type": "string"
+                            },
+                            "shortname": {
+                              "type": "string"
+                            },
+                            "badge_identifier": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parents_description": {
+                              "type": "string"
+                            },
+                            "config": {
+                              "type": "string"
+                            },
+                            "portal_config": {
+                              "type": "string"
+                            },
+                            "userid": {
+                              "type": "string"
+                            },
+                            "sharing": {
+                              "type": "string"
+                            },
+                            "latest": {
+                              "type": "object",
+                              "nullable": true
+                            },
+                            "badge_order": {
+                              "type": "string"
+                            },
+                            "group_name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "lastupdated": {
+                              "type": "string"
+                            },
+                            "badge_id_version": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "12442_0": {
+                          "type": "object",
+                          "properties": {
+                            "badge_id": {
+                              "type": "string"
+                            },
+                            "badge_version": {
+                              "type": "string"
+                            },
+                            "shortname": {
+                              "type": "string"
+                            },
+                            "badge_identifier": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parents_description": {
+                              "type": "string"
+                            },
+                            "config": {
+                              "type": "string"
+                            },
+                            "portal_config": {
+                              "type": "string"
+                            },
+                            "userid": {
+                              "type": "string"
+                            },
+                            "sharing": {
+                              "type": "string"
+                            },
+                            "latest": {
+                              "type": "object",
+                              "nullable": true
+                            },
+                            "badge_order": {
+                              "type": "string"
+                            },
+                            "group_name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "lastupdated": {
+                              "type": "string"
+                            },
+                            "badge_id_version": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "homework": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "links": {
+                      "type": "object",
+                      "properties": {
+                        "1517_1": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "badge_id": {
+                                  "type": "string"
+                                },
+                                "badge_version": {
+                                  "type": "string"
+                                },
+                                "column_id": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "date": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "activity_type": {
+                                  "type": "string"
+                                },
+                                "activity_source": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "1516_0": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "badge_id": {
+                                  "type": "string"
+                                },
+                                "badge_version": {
+                                  "type": "string"
+                                },
+                                "column_id": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "date": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "activity_type": {
+                                  "type": "string"
+                                },
+                                "activity_source": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "1519_0": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "badge_id": {
+                                  "type": "string"
+                                },
+                                "badge_version": {
+                                  "type": "string"
+                                },
+                                "column_id": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "date": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "activity_type": {
+                                  "type": "string"
+                                },
+                                "activity_source": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "1514_0": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "badge_id": {
+                                  "type": "string"
+                                },
+                                "badge_version": {
+                                  "type": "string"
+                                },
+                                "column_id": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "date": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "activity_type": {
+                                  "type": "string"
+                                },
+                                "activity_source": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "1515_0": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "badge_id": {
+                                  "type": "string"
+                                },
+                                "badge_version": {
+                                  "type": "string"
+                                },
+                                "column_id": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "date": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "activity_type": {
+                                  "type": "string"
+                                },
+                                "activity_source": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "a",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "section",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "term_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "section_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/badges/stock/": {
+      "get": {
+        "summary": "GET stock",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "identifier": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_filterString": {
+                            "type": "string"
+                          },
+                          "shortname": {
+                            "type": "string"
+                          },
+                          "badge_id_level": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "picture": {
+                            "type": "string"
+                          },
+                          "stock": {
+                            "type": "number"
+                          },
+                          "desired": {
+                            "type": "number"
+                          },
+                          "badge_id": {
+                            "type": "string"
+                          },
+                          "level": {
+                            "type": "number"
+                          },
+                          "buy": {
+                            "type": "number"
+                          },
+                          "due": {
+                            "type": "number"
+                          },
+                          "shared_by": {
+                            "type": "string"
+                          },
+                          "shared": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "section",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "section_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "term_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "seeIfShared",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "POST stock",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stock": {
+                    "type": "string"
+                  },
+                  "badge_id": {
+                    "type": "string"
+                  },
+                  "level": {
+                    "type": "string"
+                  },
+                  "section_id": {
+                    "type": "string"
+                  },
+                  "section": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/programme/": {
+      "get": {
+        "summary": "GET programme",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "eveningid": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "parentsrequired": {
+                            "type": "string"
+                          },
+                          "meetingdate": {
+                            "type": "string"
+                          },
+                          "parentsattendingcount": {
+                            "type": "string"
+                          },
+                          "primary_leader": {
+                            "type": "object",
+                            "properties": {
+                              "member_id": {
+                                "type": "number"
+                              },
+                              "photo_guid": {
+                                "type": "string"
+                              },
+                              "first_name": {
+                                "type": "string"
+                              },
+                              "last_name": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "badges": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "img": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "unavailable_leaders": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sectionid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "termid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "verbose",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/programme/activities/": {
+      "get": {
+        "summary": "GET activities",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "activityid": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "runningtime": {
+                            "type": "string"
+                          },
+                          "location": {
+                            "type": "string"
+                          },
+                          "shared": {
+                            "type": "string"
+                          },
+                          "visibility": {
+                            "type": "string"
+                          },
+                          "site_type": {
+                            "type": "string"
+                          },
+                          "rating": {
+                            "type": "number"
+                          },
+                          "icons": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "review_summary": {
+                            "type": "object",
+                            "properties": {
+                              "writeup": {
+                                "type": "object",
+                                "properties": {
+                                  "rating": {
+                                    "type": "number"
+                                  },
+                                  "number_reviews": {
+                                    "type": "number"
+                                  }
+                                }
+                              },
+                              "activity": {
+                                "type": "object",
+                                "properties": {
+                                  "rating": {
+                                    "type": "number"
+                                  },
+                                  "number_reviews": {
+                                    "type": "number"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "num": {
+                      "type": "number"
+                    },
+                    "query": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "section_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "section",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/settings/section/config/": {
+      "get": {
+        "summary": "GET section configuration",
+        "description": "Get section configuration details",
+        "responses": {
+          "200": {
+            "description": "Section configuration data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "section_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/settings/patrols/": {
+      "get": {
+        "summary": "GET patrols",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "patrols": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "patrolid": {
+                            "type": "string"
+                          },
+                          "sectionid": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "active": {
+                            "type": "string"
+                          },
+                          "points": {
+                            "type": "string"
+                          },
+                          "census_costs": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sectionid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/users/auth/": {
+      "post": {
+        "summary": "POST auth",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "now_ts": {
+                      "type": "number"
+                    },
+                    "security_question": {
+                      "type": "string"
+                    },
+                    "security_letters": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "security_recoverable": {
+                      "type": "boolean"
+                    },
+                    "security_number": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "device_id": {
+                    "type": "string"
+                  },
+                  "seen": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/roles/": {
+      "get": {
+        "summary": "GET user roles",
+        "description": "Fetch user roles and permissions",
+        "responses": {
+          "200": {
+            "description": "User roles data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "section_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/users/notifications/": {
+      "get": {
+        "summary": "GET notifications",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "meta": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "section_id",
             "in": "query",
             "required": false,
             "schema": {
