@@ -117,9 +117,19 @@ app.get('/oauth/setup', (req, res) => {
 
 // OAuth configuration handler
 app.post('/oauth/configure', (req, res) => {
-  const { client_id, client_secret, scopes } = req.body;
+  let { client_id, client_secret, scopes } = req.body;
   
-  console.log('OAuth configure received:', { client_id: client_id ? '***' : 'undefined', client_secret: client_secret ? '***' : 'undefined', scopes });
+  // Trim whitespace from credentials (common issue with copy/paste)
+  client_id = client_id?.trim();
+  client_secret = client_secret?.trim();
+  
+  console.log('OAuth configure received:', { 
+    client_id: client_id ? '***' : 'undefined', 
+    client_secret: client_secret ? '***' : 'undefined', 
+    scopes,
+    clientIdLength: client_id?.length || 0,
+    clientSecretLength: client_secret?.length || 0
+  });
   
   if (!client_id || !client_secret) {
     return res.redirect('/oauth/setup?error=Client ID and Secret are required');
@@ -232,19 +242,109 @@ app.get('/oauth/token-info', (req, res) => {
 });
 
 // Debug endpoint to test OAuth proxy
-app.get('/oauth/debug', (req, res) => {
-  res.json({
+app.get('/oauth/debug', async (req, res) => {
+  console.log('🔧 OAuth debug endpoint called');
+  
+  const results = {
     status: 'OAuth proxy is accessible',
-    endpoint: '/oauth/proxy',
-    method: 'POST',
     timestamp: new Date().toISOString(),
-    sampleRequest: {
-      client_id: 'your-client-id',
-      client_secret: 'your-client-secret', 
-      grant_type: 'client_credentials',
-      scope: 'section:member:read'
-    }
-  });
+    tests: {}
+  };
+  
+  // Test 1: OSM base URL
+  try {
+    console.log('Testing OSM base URL...');
+    const testResponse = await axios.get('https://www.onlinescoutmanager.co.uk', {
+      timeout: 5000,
+      headers: {
+        'User-Agent': 'OSM-API-Debug/1.0'
+      }
+    });
+    
+    console.log('✅ OSM base URL is reachable:', {
+      status: testResponse.status,
+      statusText: testResponse.statusText
+    });
+    
+    results.tests.osmBaseUrl = {
+      success: true,
+      status: testResponse.status,
+      statusText: testResponse.statusText
+    };
+  } catch (error) {
+    console.log('❌ OSM base URL not reachable:', {
+      message: error.message,
+      code: error.code
+    });
+    
+    results.tests.osmBaseUrl = {
+      success: false,
+      error: error.message,
+      code: error.code
+    };
+  }
+  
+  // Test 2: OSM OAuth endpoint specifically
+  try {
+    console.log('Testing OSM OAuth endpoint...');
+    const oauthTestResponse = await axios.post('https://www.onlinescoutmanager.co.uk/oauth/token', 
+      new URLSearchParams({
+        grant_type: 'client_credentials',
+        scope: 'section:member:read'
+      }), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${Buffer.from('test:test').toString('base64')}`,
+        'User-Agent': 'OSM-API-Debug/1.0'
+      },
+      timeout: 5000
+    });
+    
+    console.log('✅ OSM OAuth endpoint responded (expected 401):', {
+      status: oauthTestResponse.status
+    });
+    
+    results.tests.osmOauthEndpoint = {
+      success: true,
+      status: oauthTestResponse.status,
+      note: 'Unexpected success - should be 401'
+    };
+  } catch (error) {
+    console.log('OAuth endpoint response:', {
+      status: error.response?.status,
+      message: error.message,
+      code: error.code
+    });
+    
+    results.tests.osmOauthEndpoint = {
+      success: error.response?.status === 401 || error.response?.status === 400, // Expected for bad credentials
+      status: error.response?.status,
+      error: error.message,
+      code: error.code,
+      note: error.response?.status === 401 ? 'Expected 401 - endpoint is working' : 'Unexpected error'
+    };
+  }
+  
+  // Test 3: DNS resolution
+  try {
+    console.log('Testing DNS resolution...');
+    const dns = require('dns').promises;
+    const addresses = await dns.resolve4('www.onlinescoutmanager.co.uk');
+    
+    console.log('✅ DNS resolution successful:', addresses);
+    results.tests.dnsResolution = {
+      success: true,
+      addresses: addresses
+    };
+  } catch (error) {
+    console.log('❌ DNS resolution failed:', error.message);
+    results.tests.dnsResolution = {
+      success: false,
+      error: error.message
+    };
+  }
+  
+  res.json(results);
 });
 
 // Check if OAuth config exists in session
@@ -266,38 +366,62 @@ app.options('/oauth/proxy', (req, res) => {
 
 // OAuth proxy endpoint for Swagger UI (avoids CORS issues)
 app.post('/oauth/proxy', async (req, res) => {
-  console.log('OAuth proxy request received:', {
+  const startTime = Date.now();
+  console.log('🔵 OAuth proxy request started:', {
+    timestamp: new Date().toISOString(),
     contentType: req.get('content-type'),
     body: req.body,
-    headers: Object.keys(req.headers)
+    headers: Object.keys(req.headers),
+    ip: req.ip
   });
 
-  // Handle both JSON and form-encoded requests from Swagger UI
-  let client_id, client_secret, grant_type, scope;
-  
-  if (req.get('content-type')?.includes('application/x-www-form-urlencoded')) {
-    // Form-encoded request
-    ({ client_id, client_secret, grant_type, scope } = req.body);
-  } else if (req.get('content-type')?.includes('application/json')) {
-    // JSON request
-    ({ client_id, client_secret, grant_type, scope } = req.body);
-  } else {
-    // Try to parse anyway
-    ({ client_id, client_secret, grant_type, scope } = req.body || {});
-  }
-  
-  console.log('Parsed OAuth params:', {
-    hasClientId: !!client_id,
-    hasClientSecret: !!client_secret,
-    grant_type,
-    scope: scope || 'none'
-  });
-  
-  if (!client_id || !client_secret || grant_type !== 'client_credentials') {
-    return res.status(400).json({ error: 'invalid_request', error_description: 'Missing or invalid parameters' });
-  }
+  // Set timeout for this request
+  const timeoutId = setTimeout(() => {
+    console.log('⏰ OAuth proxy timeout after 10 seconds');
+    if (!res.headersSent) {
+      res.status(408).json({ error: 'timeout', error_description: 'Request timed out after 10 seconds' });
+    }
+  }, 10000);
 
   try {
+    // Handle both JSON and form-encoded requests from Swagger UI
+    let client_id, client_secret, grant_type, scope;
+    
+    if (req.get('content-type')?.includes('application/x-www-form-urlencoded')) {
+      // Form-encoded request
+      ({ client_id, client_secret, grant_type, scope } = req.body);
+    } else if (req.get('content-type')?.includes('application/json')) {
+      // JSON request
+      ({ client_id, client_secret, grant_type, scope } = req.body);
+    } else {
+      // Try to parse anyway
+      ({ client_id, client_secret, grant_type, scope } = req.body || {});
+    }
+    
+    // Trim whitespace from credentials (common issue with copy/paste)
+    client_id = client_id?.trim();
+    client_secret = client_secret?.trim();
+    grant_type = grant_type?.trim();
+    scope = scope?.trim();
+    
+    console.log('📋 Parsed OAuth params:', {
+      hasClientId: !!client_id,
+      clientIdLength: client_id?.length || 0,
+      hasClientSecret: !!client_secret,
+      clientSecretLength: client_secret?.length || 0,
+      grant_type,
+      scope: scope || 'none',
+      clientIdPreview: client_id ? `${client_id.substring(0, 8)}...` : 'none',
+      clientSecretPreview: client_secret ? `${client_secret.substring(0, 8)}...` : 'none'
+    });
+    
+    if (!client_id || !client_secret || grant_type !== 'client_credentials') {
+      clearTimeout(timeoutId);
+      console.log('❌ Invalid parameters provided');
+      return res.status(400).json({ error: 'invalid_request', error_description: 'Missing or invalid parameters' });
+    }
+
+    console.log('🚀 Making request to OSM OAuth endpoint...');
     const tokenResponse = await axios.post('https://www.onlinescoutmanager.co.uk/oauth/token', 
       new URLSearchParams({
         grant_type: 'client_credentials',
@@ -306,29 +430,62 @@ app.post('/oauth/proxy', async (req, res) => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': `Basic ${Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`
-      }
+      },
+      timeout: 8000 // 8 second timeout for the external request
     });
 
-    console.log('OSM OAuth success:', { 
+    clearTimeout(timeoutId);
+    const duration = Date.now() - startTime;
+    console.log('✅ OSM OAuth success:', { 
       hasAccessToken: !!tokenResponse.data.access_token,
       tokenType: tokenResponse.data.token_type,
-      expiresIn: tokenResponse.data.expires_in
+      expiresIn: tokenResponse.data.expires_in,
+      duration: `${duration}ms`
     });
 
     // Return the token response directly to Swagger UI
     res.json(tokenResponse.data);
   } catch (error) {
-    console.error('OAuth proxy error details:', {
+    clearTimeout(timeoutId);
+    const duration = Date.now() - startTime;
+    console.error('❌ OAuth proxy error details:', {
+      duration: `${duration}ms`,
       status: error.response?.status,
       statusText: error.response?.statusText,
       data: error.response?.data,
       message: error.message,
-      code: error.code
+      code: error.code,
+      isTimeout: error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT'
     });
     
-    res.status(error.response?.status || 500).json(
-      error.response?.data || { error: 'server_error', error_description: `Token exchange failed: ${error.message}` }
-    );
+    if (!res.headersSent) {
+      let errorResponse;
+      
+      if (error.code === 'ETIMEDOUT' || error.code === 'ECONNABORTED') {
+        errorResponse = {
+          error: 'network_timeout',
+          error_description: 'Unable to connect to OSM OAuth server. This may be due to network restrictions on the hosting platform or OSM server being unavailable.',
+          debug_info: {
+            error_code: error.code,
+            duration: `${duration}ms`,
+            suggestion: 'Try again in a few minutes, or contact your hosting provider about external network access.'
+          }
+        };
+      } else if (error.response?.data) {
+        errorResponse = error.response.data;
+      } else {
+        errorResponse = {
+          error: 'server_error',
+          error_description: `Token exchange failed: ${error.message}`,
+          debug_info: {
+            error_code: error.code,
+            duration: `${duration}ms`
+          }
+        };
+      }
+      
+      res.status(error.response?.status || 408).json(errorResponse);
+    }
   }
 });
 
