@@ -55,8 +55,11 @@ function addOAuthStatusIndicator(tokenInfo) {
         <button onclick="refreshOAuthToken()" style="background: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-top: 5px; margin-right: 5px;">
           Refresh Token
         </button>
-        <button onclick="openSwaggerOAuth()" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-top: 5px;">
+        <button onclick="openSwaggerOAuth()" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-top: 5px; margin-right: 5px;">
           Use Different Credentials
+        </button>
+        <button onclick="checkLastOAuthRequest()" style="background: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-top: 5px;">
+          Check Last Request
         </button>
       </div>
     `;
