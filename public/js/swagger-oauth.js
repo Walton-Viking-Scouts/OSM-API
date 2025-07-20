@@ -87,8 +87,11 @@ function addOAuthConfiguredMessage() {
         <button onclick="openSwaggerOAuth()" style="background: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;">
           Use Swagger OAuth
         </button>
-        <button onclick="testOAuthProxy()" style="background: #ffc107; color: #212529; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+        <button onclick="testOAuthProxy()" style="background: #ffc107; color: #212529; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;">
           Test OAuth Proxy
+        </button>
+        <button onclick="checkLastOAuthRequest()" style="background: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+          Check Last Request
         </button>
       </div>
     `;
@@ -110,8 +113,11 @@ function addOAuthSetupMessage() {
         <button onclick="openSwaggerOAuth()" style="background: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;">
           Use Swagger OAuth
         </button>
-        <button onclick="testOAuthProxy()" style="background: #ffc107; color: #212529; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+        <button onclick="testOAuthProxy()" style="background: #ffc107; color: #212529; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;">
           Test OAuth Proxy
+        </button>
+        <button onclick="checkLastOAuthRequest()" style="background: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+          Check Last Request
         </button>
       </div>
     `;
@@ -214,29 +220,36 @@ function refreshOAuthToken() {
 }
 
 function openSwaggerOAuth() {
+  // Add debug info to the page
+  addDebugMessage('Opening Swagger OAuth dialog...');
+  
   // Wait for Swagger UI to be available
   const waitForSwagger = setInterval(() => {
     if (window.ui && window.ui.authActions) {
       clearInterval(waitForSwagger);
       
       try {
+        addDebugMessage('Swagger UI found, triggering OAuth dialog');
+        
         // Trigger Swagger UI's built-in OAuth dialog
         const authWrapper = document.querySelector('.auth-wrapper');
         if (authWrapper) {
           // Find and click the authorize button
           const authorizeBtn = document.querySelector('.btn.authorize');
           if (authorizeBtn) {
+            addDebugMessage('Clicking authorize button');
             authorizeBtn.click();
           } else {
             // Fallback: manually trigger auth action
+            addDebugMessage('Using fallback auth action trigger');
             window.ui.authActions.showDefinitions(['oauth2']);
           }
         } else {
           // Manual auth action trigger
+          addDebugMessage('Using manual auth action trigger');
           window.ui.authActions.showDefinitions(['oauth2']);
         }
       } catch (error) {
-        console.error('Error opening Swagger OAuth:', error);
         addErrorMessage(`Failed to open OAuth dialog: ${error.message}`);
       }
     }
@@ -245,6 +258,7 @@ function openSwaggerOAuth() {
   // Timeout after 5 seconds
   setTimeout(() => {
     clearInterval(waitForSwagger);
+    addDebugMessage('OAuth dialog timeout - check if modal opened');
   }, 5000);
 }
 
@@ -267,6 +281,21 @@ function addErrorMessage(message) {
       </div>
     `;
     container.appendChild(errorDiv);
+  }
+}
+
+function addDebugMessage(message) {
+  const container = document.querySelector('.swagger-ui .info');
+  if (container) {
+    const debugDiv = document.createElement('div');
+    debugDiv.className = 'oauth-debug-message';
+    debugDiv.innerHTML = `
+      <div style="background-color: #e2e3e5; border: 1px solid #d6d8db; color: #383d41; padding: 5px; margin: 5px 0; border-radius: 4px; font-size: 12px;">
+        <strong>🔧 Debug:</strong> ${message}
+        <button onclick="this.parentElement.parentElement.remove()" style="float: right; background: none; border: none; color: #383d41; cursor: pointer; font-size: 10px;">×</button>
+      </div>
+    `;
+    container.appendChild(debugDiv);
   }
 }
 
@@ -296,13 +325,13 @@ function getOAuthToken() {
 }
 
 function testOAuthProxy() {
-  console.log('Testing OAuth proxy endpoint...');
+  addDebugMessage('Testing OAuth proxy endpoint...');
   
   // First test if the debug endpoint is accessible
   fetch('/oauth/debug')
     .then(response => response.json())
     .then(data => {
-      console.log('Debug endpoint response:', data);
+      addDebugMessage('Debug endpoint accessible');
       
       // Now test the actual proxy with dummy credentials
       return fetch('/oauth/proxy', {
@@ -319,11 +348,10 @@ function testOAuthProxy() {
       });
     })
     .then(response => {
-      console.log('OAuth proxy response status:', response.status);
+      addDebugMessage(`OAuth proxy response status: ${response.status}`);
       return response.json();
     })
     .then(data => {
-      console.log('OAuth proxy response:', data);
       if (data.error) {
         addErrorMessage(`OAuth proxy test: ${data.error} - ${data.error_description || 'Check credentials'}`);
       } else {
@@ -331,8 +359,34 @@ function testOAuthProxy() {
       }
     })
     .catch(error => {
-      console.error('OAuth proxy test failed:', error);
       addErrorMessage(`OAuth proxy test failed: ${error.message}`);
+    });
+}
+
+function checkLastOAuthRequest() {
+  addDebugMessage('Checking last OAuth request...');
+  
+  fetch('/oauth/last-request')
+    .then(response => response.json())
+    .then(data => {
+      if (data.lastRequest) {
+        const req = data.lastRequest;
+        addDebugMessage(`Last request: ${req.timestamp}`);
+        addDebugMessage(`Content-Type: ${req.contentType}`);
+        addDebugMessage(`Body keys: ${Object.keys(req.body || {}).join(', ')}`);
+        addDebugMessage(`Headers: ${req.headers.join(', ')}`);
+        
+        // Show body content if it exists
+        if (req.body && Object.keys(req.body).length > 0) {
+          const bodyStr = JSON.stringify(req.body, null, 2);
+          addDebugMessage(`Body content: ${bodyStr.substring(0, 200)}${bodyStr.length > 200 ? '...' : ''}`);
+        }
+      } else {
+        addDebugMessage('No OAuth requests recorded yet');
+      }
+    })
+    .catch(error => {
+      addErrorMessage(`Failed to check last request: ${error.message}`);
     });
 }
 

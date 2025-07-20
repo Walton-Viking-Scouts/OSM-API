@@ -358,22 +358,56 @@ app.get('/oauth/config-status', (req, res) => {
 
 // Handle preflight OPTIONS requests for CORS
 app.options('/oauth/proxy', (req, res) => {
+  console.log('🔧 OAuth proxy OPTIONS request received');
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.sendStatus(200);
 });
 
+// Test endpoint to verify Swagger UI can reach the server
+app.post('/oauth/test', (req, res) => {
+  console.log('🧪 OAuth test endpoint called:', {
+    timestamp: new Date().toISOString(),
+    contentType: req.get('content-type'),
+    body: req.body,
+    headers: Object.keys(req.headers),
+    userAgent: req.get('user-agent')
+  });
+  
+  res.json({
+    success: true,
+    message: 'Test endpoint reached successfully',
+    receivedData: {
+      contentType: req.get('content-type'),
+      bodyKeys: Object.keys(req.body || {}),
+      timestamp: new Date().toISOString()
+    }
+  });
+});
+
+// Get last OAuth request info for debugging
+app.get('/oauth/last-request', (req, res) => {
+  res.json({
+    lastRequest: global.lastOAuthRequest || null,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // OAuth proxy endpoint for Swagger UI (avoids CORS issues)
 app.post('/oauth/proxy', async (req, res) => {
   const startTime = Date.now();
-  console.log('🔵 OAuth proxy request started:', {
+  const requestInfo = {
     timestamp: new Date().toISOString(),
     contentType: req.get('content-type'),
     body: req.body,
     headers: Object.keys(req.headers),
     ip: req.ip
-  });
+  };
+  console.log('🔵 OAuth proxy request started:', requestInfo);
+  
+  // Store request info in a global variable so we can display it later
+  global.lastOAuthRequest = requestInfo;
 
   // Set timeout for this request
   const timeoutId = setTimeout(() => {
